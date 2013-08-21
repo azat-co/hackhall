@@ -16,7 +16,8 @@
 	},
 	"devDependencies":{
 		"mocha": "",
-		"superagent":""
+		"superagent":"",
+		"concat-stream": "1.0.1"
 	},
 	"engines": {
 	  "node": ">=0.6"
