@@ -1,5 +1,5 @@
 {
-	"name": "application-name",
+	"name": "hackhall",
 	"version": "0.0.1",
 	"private": true,
 	"main": "server",
@@ -9,15 +9,15 @@
 	"dependencies": {
 		"express": ">=2.2.0",
 		"jade": "*",
-	"mongodb": "*",
-	"mongoose":"",
-	"oauth":"*",
-	"pause":"*"
+		"mongodb": "*",
+		"mongoose":"",
+		"oauth":"*",
+		"pause":"*",
+		"concat-stream": "1.0.1"
 	},
 	"devDependencies":{
 		"mocha": "",
-		"superagent":"",
-		"concat-stream": "1.0.1"
+		"superagent":""
 	},
 	"engines": {
 	  "node": ">=0.6"
