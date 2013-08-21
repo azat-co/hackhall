@@ -1,0 +1,82 @@
+<div class="row-fluid">
+	<div class="span2"></div>
+	<div class="span8">	
+		<div class="pull-left span4">
+		<p><img src="<%= (attr.photoUrl) ? attr.photoUrl : '/img/user.png' %>" class="img-polaroid" /></p>
+		<h2><%= attr.displayName %></h2>	
+		<p>Role:
+		<% var roles = 'user staff mentor investor founder'.split(' ');
+		if (profile.admin) { %>
+			<select class="input-small roles">
+				<% _.each(roles, function(value,key,list){ %>
+					<option value="<%= value %>" <%= (attr.role==value) ? 'selected="true"':'' %> ><%= value %></option>
+				<%	})%>
+			</select>
+			<div class="hide roles-loader" >
+				<img src="/img/loader.gif"/>
+			</div>
+		<% }
+		else { %>
+ 			<%= (attr.role=='admin')? '<span class="label label-important">admin</span>' : '' %>
+			<%= (attr.role=='user')? '<span class="label label-info">user</span>' : '' %>						
+			<%= (!attr.role)? '<span class="label label-info">user</span>' : '' %>						
+		<% } %>
+		</p>
+		<p>Likes: <%= attr.posts.likes.length %></p>
+		<p>Watches: <%= attr.posts.watches.length %></p>
+		<p>Comments: <%= attr.posts.comments.length %></p>
+		<p><strong>Points:</strong> <%= (100+attr.posts.likes.length+attr.posts.watches.length+attr.posts.comments.length*4) %></p>
+
+		</div>
+		<div class="well pull-left span5">
+			<p><%= (attr.headline)? attr.headline : attr.displayName %></p>
+			<p><strong>Links</strong>:
+	 			<%= (attr.angelUrl) ? '<a href="'+attr.angelUrl+'" target="_blank">'+attr.angelUrl+'</a>' : '' %>	<br/>					
+				<%= (attr.twitterUrl) ? '<a href="'+attr.twitterUrl+'" target="_blank">'+attr.twitterUrl+'</a>' : '' %><br/>											
+				<%= (attr.facebookUrl) ? '<a href="'+attr.facebookUrl+'" target="_blank">'+attr.facebookUrl+'</a>' : '' %><br/>											
+				<%= (attr.linkedinUrl) ? '<a href="'+attr.linkedinUrl+'" target="_blank">'+attr.linkedinUrl+'</a>' : '' %><br/>											
+				<%= (attr.githubUrl) ? '<a href="'+attr.githubUrl+'" target="_blank">'+attr.githubUrl+'</a>' : '' %>						
+			</p>			
+		</div>
+	</div>
+	<div class="span2"></div>
+</div>
+<div class="row-fluid">
+	<div class="span2"></div>
+	<div class="span8">
+		<hr/>
+		<h3>Posts</h3>
+		<% _.each(attr.posts.own, function(value,key,list) { %>
+			<p><a href="/#posts/<%= value._id %>"><%= value.title %></a></p>
+		<% });%>
+	</div>
+	<div class="span2">
+	</div>
+</div>
+<% if (attr.own) {%>
+<div class="row-fluid">
+	<div class="span2"></div>
+	<div class="span8">
+		<hr/>
+		<div class="controls">
+			<a href="#delete-confirm-modal" role="button" class="btn  btn-danger btn-block" data-toggle="modal">Delete Account</a>
+		</div>
+		
+		<div id="delete-confirm-modal" class="modal hide"  tabindex="-1" role="dialog" aria-labelledby="edit-label" aria-hidden="true" data-backdrop="static">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="edit-label">Delete Account</h3>
+		  </div>
+		  <div class="modal-body">
+			Are you sure?
+		  </div> 
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		    <a class="btn btn-danger" id="delete" >Yes</a>
+		  </div>
+		</div>		
+	</div>
+	<div class="span2">
+	</div>
+</div>
+<%}%>

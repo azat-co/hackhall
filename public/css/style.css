@@ -1,0 +1,23 @@
+body {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 300;
+/*  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+}
+
+a {
+/*  color: #00B7FF;*/
+}
+div#users-box div.item {
+	padding-bottom:1.5em;
+	float:left;
+	margin-left:0;
+}
+div#users-box div.item img {
+	margin-bottom:0.5em;
+/*	width:100px;*/
+}
+div#users-box div.item .user-name {
+	margin-bottom:0.5em;
+}

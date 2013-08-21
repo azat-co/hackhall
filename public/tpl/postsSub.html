@@ -1,0 +1,41 @@
+<div class="btn-toolbar pull-right">
+  <div class="btn-group">
+	<% if (attr.admin) { %> 
+		<a class="btn <%= (attr.like) ? 'disabled' : '' %> like-post" title="Like"><i class="icon-thumbs-up"></i> <span class="hidden-phone">Like</span></a> 
+		<a class="btn <%= (attr.watch) ? 'disabled' : '' %> watch-post"  title="Watch"><i class="icon-eye-open"></i> <span class="hidden-phone">Watch</span></a>
+		
+	<% 	}
+	else {
+	%> 
+
+	<%
+	} %>
+	<% if (attr.own || attr.admin) {
+		%> <a class="btn btn-info edit-post" title="Edit"><i class="icon-edit"></i> <span class="hidden-phone">Edit</span></a> <%
+	}
+	else {
+	%> 
+	<a class="btn <%= (attr.like) ? 'disabled' : '' %> like-post" title="Like"><i class="icon-thumbs-up"></i> <span class="hidden-phone">Like</span></a> 
+	<a class="btn <%= (attr.watch) ? 'disabled' : '' %> watch-post"  title="Watch"><i class="icon-eye-open"></i> <span class="hidden-phone">Watch</span></a>
+	<%
+	} %>
+	<% if (attr.own || attr.admin) {
+		%> <a class="btn btn-danger remove" title="Remove"><i class="icon-remove"></i> <span class="hidden-phone">Remove</span></a> <%
+	}
+	else {
+	}
+	%>    
+	<a class="btn" href="/#posts/<%= attr._id %>" title="Comment"><i class="icon-comment"></i> <span class="hidden-phone">Comment</span></a> 
+  </div>
+</div>
+
+<h3><a href="<%= (attr.url) ? attr.url : '/#posts/'+attr._id %>" <%=(attr.url) ? ' target="_blank" ':''%> > <%= attr.title %></a><small><%= (attr.url)? ' ('+attr.url+')': '' %> </small></h3>
+<p><small>by <a href="/#people/<%= attr.author.id %>"><%= attr.author.name %></a> 
+	<%= (attr.likes && attr.likes.length>0) ? '| Likes: '+attr.likes.length :'' %>
+	<%= (attr.comments && attr.comments.length>0) ? '| Comments: '+attr.comments.length :'' %>
+	<%= (attr.watches && attr.watches.length>0) ? '| Watches: '+attr.watches.length :'' %>
+</small></p>
+<!-- <p><%= (attr.url) ? '' : attr.text %></p> -->
+
+<div class="edit-box">
+</div>

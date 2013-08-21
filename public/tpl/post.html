@@ -1,0 +1,37 @@
+<div class="row-fluid">
+	<div class="span12">
+
+		<div class="pull-right">
+			<!-- <a class="btn btn-success" href="#posts/new">Comment</a> -->
+		</div>
+		<h1><%= attr.title %> <small><%= attr.author.name %></small></h1>
+		<hr/>
+		<div id="posts-box">
+			<p><%= (attr.url) ? attr.url : attr.text %></p>			
+		</div>
+		<hr/>
+		<% _.each(attr.comments, function(value, index, list) {%>
+		<h5><a href="/#people/<%= value.author.id%>"><%= value.author.name %></a></h5>
+		<p><%= value.text %></p>
+		<!-- <p><%= list%></p> -->
+		<!-- <p><%= index%></p> -->
+		<% }) %>
+		<!-- <hr/> -->
+		<form class="form-horizontal">
+			<!-- <legend>Add Comment</legend> -->
+			<div class="control-group">
+				<!-- <label class="control-label">Text</label> -->
+				<!-- <div class="controls"> -->
+					<textarea rows="3" class="span6" name="comment" placeholder="Your Comment"></textarea>
+					<span class="help-block">Make sure your comment provide value to other members.</span>
+				<!-- </div> -->
+			</div>
+			<div class="control-group">
+				<!-- <div class="controls"> -->
+					<a class="btn btn-success" id="comment-btn">Add Comment</a>
+				<!-- </div> -->
+			</div>			
+		</form>
+	</div>
+
+</div>

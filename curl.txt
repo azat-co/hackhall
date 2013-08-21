@@ -1,0 +1,16 @@
+curl --cookie -d "name=azat&password=1" "http://localhost:3000/api/login"
+
+curl -c "cookie.txt" -d "username=azat&password=1" "http://localhost:3000/api/login"
+
+curl -c "cookie.txt" -d "email=1@1.com&password=1" "http://localhost:3000/api/login"
+
+curl  "http://localhost:3000/api/profile" -b "cookie.txt"
+curl  "http://localhost:3000/api/logout" -X "POST" -b "cookie.txt"
+
+
+curl  "http://localhost:3000/api/signup" -X "POST" -c "cookie.txt" -d  "name=azat2&password=2&email=2@2.com&code=smrules" -b "cookie.txt"
+
+curl  "http://localhost:3000/api/posts" -b "cookie.txt"
+
+PUT:
+curl -i -H "Accept: application/json" -X PUT -d "text=AHJAHHAHAHAHAHAHAH" http://localhost:3000/api/posts/50344fdd3541cffe26000001 -b "cookie.txt"

@@ -1,0 +1,71 @@
+<form class="form-horizontal">
+	<legend>Application</legend>
+	<div class="row-fluid">	
+		<div class="span2">
+			<img src="<%= attr.photoUrl %>" class="img-polaroid pull-left" />
+		</div>
+		<div class="offset1 span6">
+			<div class="control-group">
+				<label class="control-label">Display Name</label>
+				<div class="controls">
+					<input type="text" name="displayName" value="<%= attr.displayName %>" placeholder="Display Name">
+					<span class="help-block">Keep it real.</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Facebook URL</label>
+				<div class="controls">
+					<input type="text" name="facebookUrl" placeholder="Facebook URL" value="<%= (attr.facebookUrl) ? attr.facebookUrl : ''%>">
+					<span class="help-block">Link to your Facebook profile.</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Twitter URL</label>
+				<div class="controls">
+					<input type="text" name="twitterUrl" placeholder="Twitter URL" value="<%= (attr.twitterUrl) ? attr.twitterUrl : '' %>">
+					<span class="help-block">Link to your Twitter profile.</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">LinkedIn URL</label>
+				<div class="controls">
+					<input type="text" name="linkedinUrl" placeholder="LinkedIn URL" value="<%= (attr.linkedinUrl) ? attr.linkedinUrl:'' %>">
+					<span class="help-block">Link to your LinkedIn profile.</span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">GitHub URL</label>
+				<div class="controls">
+					<input type="text" name="githubUrl" placeholder="GitHub URL" value="<%= (attr.githubUrl)? attr.githubUrl :'' %>">
+					<span class="help-block">Link to your GitHub profile.</span>
+				</div>
+			</div>	
+			<div class="control-group">
+				<div class="controls">
+					<a class="btn" href="#logout">Log out</a>
+					<a class="btn btn-primary" id="update">Update</a>
+				</div>
+			</div>		
+		</div>	
+	</div>	
+	<!-- <div class="control-group">
+		<label class="control-label">Your Role</label>
+		<div class="controls">
+			<select>
+			  <option></option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</div>
+	</div>	 -->
+	<!-- <div class="control-group">
+		<label class="control-label">Text</label>
+		<div class="controls">
+			<textarea rows="3" name="text" placeholder="Text"></textarea>
+			<span class="help-block">Leave the URL blank otherwise the Text will be ignored.</span>
+		</div>
+	</div>	 -->
+
+</form>

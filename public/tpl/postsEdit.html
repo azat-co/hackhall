@@ -1,0 +1,38 @@
+<div class="modal hide"  tabindex="-1" role="dialog" aria-labelledby="edit-label" aria-hidden="true" data-backdrop="static">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="edit-label">Edit Post</h3>
+  </div>
+  <div class="modal-body">
+	<form class="form-horizontal">
+		<!-- <legend>New Post</legend> -->
+		<div class="control-group">
+			<label class="control-label">Title</label>
+			<div class="controls">
+				<input type="text" name="title" placeholder="Title" value="<%= (attr.title) ? attr.title : '' %>">
+				<span class="help-block">Keep it short and meaningful.</span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">URL</label>
+			<div class="controls">
+				<input type="text" name="url" placeholder="URL"  value="<%= (attr.url)? attr.url : '' %>">
+				<span class="help-block">To start discussion or ask a question, leave URL blank.</span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Text</label>
+			<div class="controls">
+				<textarea rows="3" name="text" placeholder="Text"><%= (attr.text) ? attr.text : '' %></textarea>
+				<span class="help-block">Leave the URL blank otherwise the Text will be ignored.</span>
+			</div>
+		</div>	
+	</form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <a class="btn btn-primary save-post" >Save changes</a>
+  </div>
+</div>
+
+
