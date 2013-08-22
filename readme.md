@@ -3,7 +3,7 @@ http://hackhall.com
 
 ## Live Demo
 
-<http://beta.accelerator.io>
+<http://hackhall.com>
 
 ## Setup
 
