@@ -30,7 +30,7 @@ exports.angelListCallback = function (req,res,next){
 				console.log('inside aRes')
 			});
 			angelRes.on('end', function(){
-				data = JSON.parse(buffer.toString('utf-8'));
+				data = JSON.parse(buf.toString('utf-8'));
 				token = data.access_token;
 				req.session.angelListAccessToken = token;				
 				if (token) next();
