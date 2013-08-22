@@ -37,7 +37,7 @@ exports.angelListCallback = function (req,res,next){
 	// angelReq.on('end', function(){
 // 
 	})    
-	angelReq.end();
+	// angelReq.end();
 	angelReq.on('error', function(e) {
 		console.error(e);
 		next(e);
