@@ -25,6 +25,10 @@ exports.angelListCallback = function (req,res,next){
   		method: 'POST'},
 		function(angelRes){
 			angelRes.pipe(aRes);
+			angelRes.on('end', function(){
+				if (token) next();
+				else res.send(500);					
+			});			
 			// var body
 		  	// angelRes.on('data', function(buffer) {
 		  		// body += buffer
@@ -33,10 +37,7 @@ exports.angelListCallback = function (req,res,next){
 		// }
 	// );	
 	// angelReq.end();
-		angelReq.on('end', function(){
-			if (token) next();
-			else res.send(500);					
-		});
+
 	});    
 	// angelReq.end();
 	angelReq.on('error', function(e) {
