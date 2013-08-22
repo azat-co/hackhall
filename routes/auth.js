@@ -9,6 +9,13 @@ exports.angelList = function (req, res){
 	res.redirect('https://angel.co/api/oauth/authorize?client_id='+angelListClientId+'&scope=email&response_type=code');
 }
 exports.angelListCallback = function (req,res,next){
+	var aRes = concat(function(buffer){
+		data = JSON.parse(buffer.toString('utf-8'));
+		token = data.access_token;
+		req.session.angelListAccessToken = token;		
+		if (token) next();
+		else res.send(500);		
+	});		
 	console.log(req.query.code);
 	console.log('/api/oauth/token?client_id='+angelListClientId+'&client_secret='+angelListClientSecret+'&code='+req.query.code+'&grant_type=authorization_code');
 	var angelReq = https.request({
@@ -28,13 +35,7 @@ exports.angelListCallback = function (req,res,next){
 	// angelReq.on('end', function(){
 // 
 	// })    
-	var aRes = concat(function(buffer){
-		data = JSON.parse(buffer.toString('utf-8'));
-		token = data.access_token;
-		req.session.angelListAccessToken = token;		
-		if (token) next();
-		else res.send(500);		
-	});		
+	
 	angelReq.on('error', function(e) {
 		console.error(e);
 		next(e);
