@@ -22,7 +22,11 @@ exports.angelListCallback = function (req,res,next){
 		host: 'angel.co',
 		path: '/api/oauth/token?client_id='+angelListClientId+'&client_secret='+angelListClientSecret+'&code='+req.query.code+'&grant_type=authorization_code',
   		port: 443,
-  		method: 'POST'},
+  		method: 'POST',
+  		headers: {
+  			'content-length':0
+  		}
+  	},
 		function(angelRes){
 
 			angelRes.on('data', function(buffer){
@@ -31,7 +35,12 @@ exports.angelListCallback = function (req,res,next){
 			});
 			angelRes.on('end', function(){
 				console.log(buf)
-				data = JSON.parse(buf.toString('utf-8'));
+				data = try {
+					JSON.parse(buf.toString('utf-8'));
+				} catch (e) {
+					if (e) return res.send(e);
+				}
+				if (!data || data.access_token) return res.send(500);
 				token = data.access_token;
 				req.session.angelListAccessToken = token;				
 				if (token) next();
