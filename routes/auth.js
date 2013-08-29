@@ -35,8 +35,8 @@ exports.angelListCallback = function (req,res,next){
 			});
 			angelRes.on('end', function(){
 				console.log(buf)
-				data = try {
-					JSON.parse(buf.toString('utf-8'));
+				try {
+					data = JSON.parse(buf.toString('utf-8'));
 				} catch (e) {
 					if (e) return res.send(e);
 				}
