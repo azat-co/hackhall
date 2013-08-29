@@ -40,7 +40,7 @@ exports.angelListCallback = function (req,res,next){
 				} catch (e) {
 					if (e) return res.send(e);
 				}
-				if (!data || data.access_token) return res.send(500);
+				if (!data || !data.access_token) return res.send(500);
 				token = data.access_token;
 				req.session.angelListAccessToken = token;				
 				if (token) next();
