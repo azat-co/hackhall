@@ -110,7 +110,7 @@ app.post('/api/application', checkAdmin, db, routes.application.add);
 app.put('/api/application', checkApplicant, db, routes.application.update);
 app.get('/api/application', checkApplicant, db, routes.application.get);
 
-app.get('*', function(req,res){
+app.get('*', function(req, res){
 	res.send(404);
 });
 

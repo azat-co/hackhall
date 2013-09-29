@@ -1,20 +1,19 @@
 objectId = require('mongodb').ObjectID;
 
-exports.getUsers = function (req, res, next) {
+exports.getUsers = function(req, res, next) {
 	if (req.session.auth && req.session.userId) {
-		req.db.User.find({}, "firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl",function (err, list) {
-			if (err) next(err); 
+		req.db.User.find({}, "firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl", function(err, list) {
+			if (err) next(err);
 			// console.log(list);
-			res.json(200,list);
+			res.json(200, list);
 		});
-	}	
-	else {
+	} else {
 		next("User is not recognized.")
 	}
 }
 
 
-exports.getUser = function (req, res,next){
+exports.getUser = function(req, res, next) {
 	// console.log('getUser');
 	// console.log(req.params.id)
 	// if (req.session.auth && req.session.userId) {
@@ -27,35 +26,61 @@ exports.getUser = function (req, res,next){
 	// else {
 	// 	next(new Error("User is not authenticated"));
 	// }	
-	req.db.User.findById(req.params.id, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl'
-	,function(err, obj){
+	req.db.User.findById(req.params.id, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
 		if (err) next(err);
 		if (!obj) next(new Error('User is not found'));
-		req.db.Post.find({author:{id:obj._id, name:obj.displayName}}, null, {sort:{'created':-1}}, function(err,list){
+		req.db.Post.find({
+			author: {
+				id: obj._id,
+				name: obj.displayName
+			}
+		}, null, {
+			sort: {
+				'created': -1
+			}
+		}, function(err, list) {
 			if (err) next(err);
-			obj.posts.own = list || [];	
-			req.db.Post.find({likes:obj._id}, null,  {sort:{'created':-1}}, function(err,list){
+			obj.posts.own = list || [];
+			req.db.Post.find({
+				likes: obj._id
+			}, null, {
+				sort: {
+					'created': -1
+				}
+			}, function(err, list) {
 				if (err) next(err);
-				obj.posts.likes = list || [];	
-				req.db.Post.find({watches:obj._id}, null,  {sort:{'created':-1}}, function(err,list){
+				obj.posts.likes = list || [];
+				req.db.Post.find({
+					watches: obj._id
+				}, null, {
+					sort: {
+						'created': -1
+					}
+				}, function(err, list) {
 					if (err) next(err);
-					obj.posts.watches = list || [];	
-					req.db.Post.find({'comments.author.id':obj._id}, null,  {sort:{'created':-1}}, function(err,list){						
+					obj.posts.watches = list || [];
+					req.db.Post.find({
+						'comments.author.id': obj._id
+					}, null, {
+						sort: {
+							'created': -1
+						}
+					}, function(err, list) {
 						if (err) next(err);
-						obj.posts.comments = [];	
-						list.forEach(function (value, key, list) {
-							obj.posts.comments.push(value.comments.filter(function(el, i, arr){
-								return (el.author.id.toString()==obj._id.toString());
+						obj.posts.comments = [];
+						list.forEach(function(value, key, list) {
+							obj.posts.comments.push(value.comments.filter(function(el, i, arr) {
+								return (el.author.id.toString() == obj._id.toString());
 							}));
-						});			
-						res.json(200,obj);			
+						});
+						res.json(200, obj);
 					});
-				});				
-			});			
+				});
+			});
 		});
-	});	
+	});
 };
-exports.add = function (req, res, next){
+exports.add = function(req, res, next) {
 	var user = new req.db.User(req.body);
 	user.save(function(err) {
 		if (err) next(err);
@@ -63,28 +88,34 @@ exports.add = function (req, res, next){
 	});
 };
 
-exports.update = function (req, res,next){
+exports.update = function(req, res, next) {
 	var obj = req.body;
 	obj.updated = new Date();
 	delete obj._id;
-	req.db.User.findByIdAndUpdate(req.params.id,{$set: obj },{new:true},function(err,obj){
+	req.db.User.findByIdAndUpdate(req.params.id, {
+		$set: obj
+	}, {
+		new: true
+	}, function(err, obj) {
 		if (err) next(err);
-		res.json(200,obj);
+		res.json(200, obj);
 	});
-	
+
 };
-exports.del = function (req,res,next){
-	req.db.User.findByIdAndRemove(req.params.id, function(err,obj){
+exports.del = function(req, res, next) {
+	req.db.User.findByIdAndRemove(req.params.id, function(err, obj) {
 		if (err) next(err);
 		// console.log('!'+obj)
-		res.json(200,obj);
-	});	
+		res.json(200, obj);
+	});
 };
-exports.findOrAddUser = function (req,res,next){
+exports.findOrAddUser = function(req, res, next) {
 	// console.log(data)
 	data = req.angelProfile;
 	// console.log(data)
-	req.db.User.findOne({angelListId:data.id}, function (err, obj) {
+	req.db.User.findOne({
+		angelListId: data.id
+	}, function(err, obj) {
 		console.log('angelListLogin4');
 		if (err) next(err);
 		console.warn(obj);
@@ -104,37 +135,33 @@ exports.findOrAddUser = function (req,res,next){
 				facebookUrl: data.facebook_url,
 				linkedinUrl: data.linkedin_url,
 				githubUrl: data.github_url
-				}, function(err, obj) { //remember the scope of variables!
-					// console.log('angelListLogin5');
-					// console.log(request);
-					if (err) next(err);
-					console.log(obj);
-					req.session.auth = true;
-					req.session.userId = obj._id;
-					req.session.user = obj;
-					req.session.admin = false; //assing regular user role by default									
-					// if (obj.approved){
-						// res.redirect('/#posts');						
-					// }
-					// else {
-						res.redirect('/#application');
-					// }
+			}, function(err, obj) { //remember the scope of variables!
+				// console.log('angelListLogin5');
+				// console.log(request);
+				if (err) next(err);
+				console.log(obj);
+				req.session.auth = true;
+				req.session.userId = obj._id;
+				req.session.user = obj;
+				req.session.admin = false; //assing regular user role by default									
+				// if (obj.approved){
+				// res.redirect('/#posts');						
+				// }
+				// else {
+				res.redirect('/#application');
+				// }
 			});
-		}
-		else { //user is in the database
+		} else { //user is in the database
 			// console.log('user in db '+ obj._id)
 			req.session.auth = true;
 			req.session.userId = obj._id;
 			req.session.user = obj;
 			req.session.admin = obj.admin; //false; //assing regular user role by default
 			if (obj.approved) {
-				res.redirect('/#posts');			
-			}
-			else {
-				res.redirect('/#application');							
+				res.redirect('/#posts');
+			} else {
+				res.redirect('/#application');
 			}
 		}
 	})
 }
-
-
