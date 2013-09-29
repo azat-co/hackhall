@@ -1,6 +1,9 @@
 exports.checkAdmin = function (request, response, next){
-	if (request.session && request.session.auth && request.session.userId && request.session.admin) {
-		console.log('ADMIN: '+request.session.userId);
+	if (request.session 
+		&& request.session.auth 
+		&& request.session.userId 
+		&& request.session.admin) {
+		console.info('Access ADMIN: ' + request.session.userId);
 		return next();
 	}
 	else {
@@ -8,8 +11,11 @@ exports.checkAdmin = function (request, response, next){
 	}
 };
 exports.checkUser = function(req, res, next){
-	if (req.session && req.session.auth && req.session.userId && (req.session.user.approved || req.session.admin) ) {
-		console.log('USER: '+req.session.userId);
+	if (req.session 
+		&& req.session.auth 
+		&& req.session.userId 
+		&& (req.session.user.approved || req.session.admin) ) {
+		console.info('Access USER: ' + req.session.userId);
 		return next();
 	}
 	else {
@@ -17,8 +23,11 @@ exports.checkUser = function(req, res, next){
 	}	
 };
 exports.checkApplicant = function(req, res, next){
-	if (req.session && req.session.auth && req.session.userId && (!req.session.user.approved || req.session.admin) ) {
-		console.log('USER: '+req.session.userId);
+	if (req.session 
+		&& req.session.auth 
+		&& req.session.userId 
+		&& (!req.session.user.approved || req.session.admin) ) {
+		console.info('Access USER: ' + req.session.userId);
 		return next();
 	}
 	else {
@@ -27,52 +36,35 @@ exports.checkApplicant = function(req, res, next){
 };
 
 exports.login = function  (req, res, next){
-	req.db.User.findOne({email: req.body.email, password: req.body.password}, null, {safe:true}, function(err,obj) {
-		if (err) next(err);
-		if (obj) {
-			req.session.auth=true;
-			req.session.userId = obj._id.toHexString();
-			req.session.user = obj;
-			if (obj.admin) {
-				req.session.admin = true;
+	req.db.User.findOne({email: req.body.email, 
+		password: req.body.password}, 
+		null, 
+		{safe:true}, 
+		function(err, user) {
+			if (err) return next(err);
+			if (user) {
+				req.session.auth=true;
+				req.session.userId = user._id.toHexString();
+				req.session.user = user;
+				if (user.admin) {
+					req.session.admin = true;
+				}
+				console.info('Login USER: ' + req.session.userId);
+				res.json(200, {msg:"Authorized"});
 			}
-			console.log('USER!: '+req.session.userId);
-			res.json(200,{msg:"Authorized"});
-		}
-		else {
-			next('User is not found');
-		}
+			else {
+				next(new Error('User is not found.'));
+			}
 	});
 };
 exports.logout = function  (req, res) {
+	console.info('Logout USER: ' + req.session.userId);
 	req.session.destroy(function(error){
 		if (!error) {
 			res.send({msg:"Logged out"});
 		}
 	});
 };
-// mongo.Db.connect(dbUrl, function(error, client){
-// 	if (error) throw error;
-// 	else {
-// 		db=client;
-// 		invites = new mongo.Collection(db, "invites");
-// 		users = new mongo.Collection(db, "users");
-// 		posts = new mongo.Collection(db, "posts");		
-		// if (require.main === module) {
-		// }
-		// else {
-		// 	app.listen(app.get('port'), function(){
-		// 		console.log("Express server listening on port " + app.get('port'));
-		// 	});
-		// }		
-		// invites.remove();
-		// users.remove();
-		// posts.remove();
-		// invites.insert({code:'smrules'});
-		// users.insert(seedUser);
-		// posts.insert({title:'test',text:'testbody',author:{name:seedUser.displayName, id:seedUser._id}});
-	// }
-// });
 
 exports.signup = function  (request, response) {
 	//TODO validate!
@@ -135,7 +127,7 @@ exports.delProfile = function (req, res, next){
 				next(err)
 			}
 		});		
-		res.json(200,obj);
+		res.json(200, obj);
 	});
 	
 };

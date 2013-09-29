@@ -68,7 +68,7 @@ suite('APPLICATION API', function (){
 	});	
 	test('get user application', function(done){
 		user1.get(port+'/api/application/').end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 			assert.equal(res.status, 200);	
 			done();
 		});
@@ -76,21 +76,21 @@ suite('APPLICATION API', function (){
 	test('update user application', function(done){
 		user1.put(port+'/api/application/').send({			
 			firstName: "boo"}).end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 			assert.equal(res.status, 200);	
 			done();
 		});
 	});	
 	test('get user application', function(done){
 		user1.get(port+'/api/application/').end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 			assert.equal(res.status, 200);	
 			done();
 		});
 	});	
 	test('check for posts - fail (unapproved?)', function(done){
 		user1.get(port+'/api/posts/').end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 			assert.equal(res.status, 500);
 	
 			done();
@@ -122,7 +122,7 @@ suite('APPLICATION API', function (){
 	});	
 	test('log in as user - should fail', function(done){
 		user1.post(port+'/api/login').send({email:'3@3.com',password:'3'}).end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 	    	assert.equal(res.status,500);
 			
 			done();
@@ -130,7 +130,7 @@ suite('APPLICATION API', function (){
 	});	
 	test('check for posts - must fail', function(done){
 		user1.get(port+'/api/posts/').end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 			assert.equal(res.status, 500);
 	
 			done();

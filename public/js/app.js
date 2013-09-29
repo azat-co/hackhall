@@ -222,6 +222,7 @@ require([
 					password: password
 				},
 				success: function (data,status,xhr) {
+					console.log (data)
 					if (data.msg=="Authorized") {
 						app.headerView.model.trigger('login');
 						app.navigate('#posts', true);
@@ -281,13 +282,13 @@ require([
 			      withCredentials: true
 			   },
 				success: function() {
-				// console.log('s');	
+					console.log('s');	
 					app.profileView.render();	
 				},
 				error: function() {
 					console.log('error!');
 					app.navigate('#login',true);
-					// app.alertsView.error (response);					
+					app.alertsView.error (response);					
 				}
 			// 401: function (){
 			// 	app.navigate("#login", true);

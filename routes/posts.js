@@ -9,10 +9,10 @@ var LIMIT = 10;
 var SKIP = 0;
 
 exports.add = function (req, res, next){
-	console.warn("!!!");
-	console.warn(red+req.session.user._id);
-	console.warn(red+req.session.userId);
-	console.warn(red+ req.session.user.displayName);
+	// console.warn("!!!");
+	// console.warn(red+req.session.user._id);
+	// console.warn(red+req.session.userId);
+	// console.warn(red+ req.session.user.displayName);
 	if (req.body){
 		req.db.Post.create({
 			title: req.body.title,
@@ -29,7 +29,7 @@ exports.add = function (req, res, next){
 			}
 			else {
 				res.json(200,docs);
-		    	console.dir(docs);			
+		    // console.dir(docs);			
 			}
 
 		});
@@ -39,11 +39,11 @@ exports.add = function (req, res, next){
 	}
 };
 exports.getPosts = function (req, res,next){	
-	console.log(req.session.auth);
-	console.log(req.session.userId);
+	// console.log(req.session.auth);
+	// console.log(req.session.userId);
 	var limit = req.query.limit || LIMIT;
 	var skip = req.query.skip || SKIP;	
-	console.log(req.query.skip )
+	// console.log(req.query.skip )
 	req.db.Post.find({}, null,{limit:limit,skip:skip,sort:{'_id':-1}},function(err, obj){		
 	// toArray(function(err, docs) {
 	    // console.dir(obj);
@@ -138,7 +138,7 @@ function likePost (req, res, next){
 	req.db.Post.findByIdAndUpdate(req.body._id,{$push:{
 		likes: req.session.userId
 	}},{},function(err,obj){
-		console.log(obj)
+		// console.log(obj)
 		if (err) {
 			next(err);
 		}
@@ -169,7 +169,7 @@ exports.updatePost = function (req, res, next){
 			watchPost(req,res);
 		}
 		if (req.body && req.body.action =="comment" && req.body.comment && req.params.id) {     
-			console.log('comment');
+			// console.log('comment');
 			anyAction = true;
 			req.db.Post.findByIdAndUpdate(req.params.id,{
 				$push:{
@@ -182,14 +182,14 @@ exports.updatePost = function (req, res, next){
 					}			
 			}},{safe:true, new:true}, function(err, obj) {
 				if (err) throw err;
-				console.log('commented')
-		    	console.dir(obj);
+				// console.log('commented')
+		    // console.dir(obj);
 				res.json(200,obj);
 				// res.send(200);
 			});
 		}
 		if (req.session.auth && req.session.userId && req.body && req.body.action!="comment" && req.body.action!="watch" && req.body!='like' && req.params.id && (req.body.author.id == req.session.user._id || req.session.user.admin) ) {     
-			console.log('update')
+			// console.log('update')
 			req.db.Post.findById(req.params.id, function (err, doc) {
 				if (err) next(err);
 				doc.title = req.body.title;

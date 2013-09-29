@@ -39,7 +39,7 @@ suite('POSTS API', function (){
 		});
 	});
 	test('post get',function(done){
-		console.log('000'+postId);
+		// console.log('000'+postId);
 		user1.get(port+'/api/posts/'+postId).end(function(res){
 			assert.equal(res.status, 200);
 			assert.equal(res.body._id, postId);
@@ -54,7 +54,7 @@ suite('POSTS API', function (){
 	});
 	test('check for deleted post', function(done){
 		user1.get(port+'/api/posts/'+postId).end(function(res){
-			console.log(res.body)
+			// console.log(res.body)
 			assert.equal(res.status, 500);
 
 			done();
