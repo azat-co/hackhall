@@ -87,7 +87,6 @@ app.get('/auth/angellist/callback',
 //MAIN
 app.get('/api/profile', checkUser, db, routes.main.profile);
 app.del('/api/profile', checkUser, db, routes.main.delProfile);
-app.post('/api/signup', routes.main.signup);
 app.post('/api/login', db, routes.main.login);
 app.post('/api/logout', routes.main.logout);
 
