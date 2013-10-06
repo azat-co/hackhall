@@ -3,23 +3,25 @@ exports.checkAdmin = function(request, response, next) {
     console.info('Access ADMIN: ' + request.session.userId);
     return next();
   } else {
-    next("User is an administrator.");
+    next('User is not an administrator.');
   }
 };
+
 exports.checkUser = function(req, res, next) {
   if (req.session && req.session.auth && req.session.userId && (req.session.user.approved || req.session.admin)) {
     console.info('Access USER: ' + req.session.userId);
     return next();
   } else {
-    next("User is not logged in.");
+    next('User is not logged in.');
   }
 };
+
 exports.checkApplicant = function(req, res, next) {
   if (req.session && req.session.auth && req.session.userId && (!req.session.user.approved || req.session.admin)) {
     console.info('Access USER: ' + req.session.userId);
     return next();
   } else {
-    next("User is not logged in.");
+    next('User is not logged in.');
   }
 };
 
@@ -42,46 +44,25 @@ exports.login = function(req, res, next) {
         }
         console.info('Login USER: ' + req.session.userId);
         res.json(200, {
-          msg: "Authorized"
+          msg: 'Authorized'
         });
       } else {
         next(new Error('User is not found.'));
       }
     });
 };
+
 exports.logout = function(req, res) {
   console.info('Logout USER: ' + req.session.userId);
   req.session.destroy(function(error) {
     if (!error) {
       res.send({
-        msg: "Logged out"
+        msg: 'Logged out'
       });
     }
   });
 };
 
-exports.signup = function(request, response) {
-  //TODO validate!
-  // invites.findOne({code:request.body.code},function(error, object){    
-  //  if (!error && object ) {
-  //    users.insert({
-  //      firstname: request.body.firstname,
-  //      lastname: request.body.lastname,
-  //      displayname: request.body.firstname+" "+request.body.lastname,
-  //      password: request.body.password,
-  //      email: request.body.email
-  //    }, {safe:true}, function (error, object){
-  //      if (!error) {
-  //        console.log('signed up');
-  //        login(request, response);
-  //      }
-  //    });
-  //  }
-  //  else {
-  //    response.send({msg:"Code is not found"});
-  //  }
-  // });
-}
 exports.profile = function(req, res, next) {
   req.db.User.findById(req.session.userId, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
     if (err) next(err);
@@ -137,6 +118,7 @@ exports.profile = function(req, res, next) {
     });
   });
 };
+
 exports.delProfile = function(req, res, next) {
   console.log('del profile');
   console.log(req.session.userId);
@@ -149,5 +131,4 @@ exports.delProfile = function(req, res, next) {
     });
     res.json(200, obj);
   });
-
 };

@@ -11,9 +11,7 @@
 		"jade": "*",
 		"mongodb": "*",
 		"mongoose":"",
-		"oauth":"*",
-		"pause":"*",
-		"concat-stream": "1.0.1"
+		"oauth":"*"
 	},
 	"devDependencies":{
 		"mocha": "",

@@ -105,7 +105,7 @@ app.post('/api/users', checkAdmin, db, routes.users.add);
 app.put('/api/users/:id', checkAdmin, db, routes.users.update);
 app.del('/api/users/:id', checkAdmin, db, routes.users.del);
 
-//APPLCATION 
+//APPLICATION 
 app.post('/api/application', checkAdmin, db, routes.application.add); 
 app.put('/api/application', checkApplicant, db, routes.application.update);
 app.get('/api/application', checkApplicant, db, routes.application.get);

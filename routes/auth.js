@@ -3,21 +3,14 @@ var https = require('https');
 var angelListClientId = process.env.ANGELLIST_CLIENT_ID;
 var angelListClientSecret = process.env.ANGELLIST_CLIENT_SECRET;
 
-var concat = require('concat-stream')
-
 exports.angelList = function(req, res) {
 	res.redirect('https://angel.co/api/oauth/authorize?client_id=' + angelListClientId + '&scope=email&response_type=code');
 }
 exports.angelListCallback = function(req, res, next) {
-
-	var aRes = concat(function(buffer) {
-
-	});
 	var token;
 	var buf = '';
 	var data;
-	console.log(req.query.code);
-	console.log('/api/oauth/token?client_id=' + angelListClientId + '&client_secret=' + angelListClientSecret + '&code=' + req.query.code + '&grant_type=authorization_code');
+	// console.log('/api/oauth/token?client_id=' + angelListClientId + '&client_secret=' + angelListClientSecret + '&code=' + req.query.code + '&grant_type=authorization_code');
 	var angelReq = https.request({
 			host: 'angel.co',
 			path: '/api/oauth/token?client_id=' + angelListClientId + '&client_secret=' + angelListClientSecret + '&code=' + req.query.code + '&grant_type=authorization_code',
@@ -31,10 +24,8 @@ exports.angelListCallback = function(req, res, next) {
 
 			angelRes.on('data', function(buffer) {
 				buf += buffer;
-				console.log('inside aRes')
 			});
 			angelRes.on('end', function() {
-				console.log(buf)
 				try {
 					data = JSON.parse(buf.toString('utf-8'));
 				} catch (e) {
@@ -46,17 +37,7 @@ exports.angelListCallback = function(req, res, next) {
 				if (token) next();
 				else res.send(500);
 			});
-			// var body
-			// angelRes.on('data', function(buffer) {
-			// body += buffer
-			// });
-			// angelRes.on('end', function(){})
-			// }
-			// );	
-			// angelReq.end();
-
 		});
-	console.log(data)
 	angelReq.end();
 	angelReq.on('error', function(e) {
 		console.error(e);
