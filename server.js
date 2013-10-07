@@ -12,9 +12,9 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(express.cookieParser("asd;lfkajs;ldfkj"));
+  app.use(express.cookieParser('asd;lfkajs;ldfkj'));
   app.use(express.session({
-    secret: "<h1>WHEEYEEE</h1>",
+    secret: '<h1>WHEEYEEE</h1>',
     key: 'sid',
     cookie: {
       secret: true,
@@ -31,9 +31,9 @@ app.configure(function(){
 });
 
 app.configure(function() {
-	app.use(logErrors);
-	app.use(clientErrorHandler);
-	app.use(errorHandler);
+  app.use(logErrors);
+  app.use(clientErrorHandler);
+  app.use(errorHandler);
 });
 
 function logErrors(err, req, res, next) {
@@ -57,7 +57,7 @@ function errorHandler(err, req, res, next) {
   res.send(500, {error: err.toString()});
 }
 
-var dbUrl = process.env.MONGOHQ_URL || "mongodb://@127.0.0.1:27017/hackhall";
+var dbUrl = process.env.MONGOHQ_URL || 'mongodb://@127.0.0.1:27017/hackhall';
 var mongoose = require('mongoose');
 var connection = mongoose.createConnection(dbUrl);
 connection.on('error', console.error.bind(console, 'connection error:'));
@@ -67,11 +67,11 @@ connection.once('open', function () {
 
 var models = require('./models');
 function db (req, res, next) {
-	req.db = {
-		User: connection.model('User', models.User, "users"),
-		Post: connection.model('Post', models.Post, "posts")
-	};
-	return next();
+  req.db = {
+    User: connection.model('User', models.User, 'users'),
+    Post: connection.model('Post', models.Post, 'posts')
+  };
+  return next();
 }
 checkUser = routes.main.checkUser;
 checkAdmin = routes.main.checkAdmin;
@@ -110,13 +110,13 @@ app.put('/api/application', checkApplicant, db, routes.application.update);
 app.get('/api/application', checkApplicant, db, routes.application.get);
 
 app.get('*', function(req, res){
-	res.send(404);
+  res.send(404);
 });
 
 http.createServer(app);
 if (require.main === module) {
   app.listen(app.get('port'), function(){
-    console.info("Express server listening on port " + app.get('port'));
+    console.info('Express server listening on port ' + app.get('port'));
   });
 }
 else {
