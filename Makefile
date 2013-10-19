@@ -1,20 +1,5 @@
-# REPORTER = dot
 REPORTER = list
-# MOCHA_OPTS = --ui tdd 
 MOCHA_OPTS = --ui tdd --ignore-leaks
-# 
-# 
-# 
-# main:
-#   @NODE_ENV=test ./node_modules/mocha/.bin/mocha \
-#     --reporter $(REPORTER) \
-# 	tests/test.js; @echo main test;
-# 
-# test-w:
-#   @NODE_ENV=test ./node_modules/mocha/.bin/mocha \
-#     --reporter $(REPORTER) \
-#     --growl \
-#     --watch
 
 test: 
 	clear
