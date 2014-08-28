@@ -27,3 +27,24 @@ Then run `foreman start`, or `node server.js`, or `node .`, `npm start`.
 
 
 > Built with Backbone.js, Mongoose and Express.js.
+
+
+## Tests
+
+To seed data and run tests:
+
+```
+$ npm test
+```
+
+or
+
+```
+$ make test
+```
+
+Just to run tests:
+
+```
+$ node seed.js
+```

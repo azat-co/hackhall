@@ -35,7 +35,7 @@ exports.angelListCallback = function(req, res, next) {
         token = data.access_token;
         req.session.angelListAccessToken = token;
         if (token) next();
-        else res.send(500);
+        else res.status(500).send();
       });
     });
   angelReq.end();

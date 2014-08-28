@@ -10,18 +10,24 @@ var user1 = request.agent();
 var port = 'http://localhost:' + app.get('port');
 var postId;
 
+var adminUser = {
+  email: 'admin-test@test.com',
+  password: 'admin-test'
+};
+
 suite('POSTS API', function() {
   suiteSetup(function(done) {
     done();
   });
   test('log in', function(done) {
-    user1.post(port + '/api/login').send({
-      email: '1@1.com',
-      password: '1'
-    }).end(function(res) {
-      assert.equal(res.status, 200);
-      done();
-    });
+    user1
+      .post(port + '/api/login')
+      .send(adminUser)
+      .end(function(res) {
+        assert.equal(res.status, 200);
+        done();
+      }
+    );
   });
   test('add post', function(done) {
     user1.post(port + '/api/posts').send({
@@ -56,12 +62,13 @@ suite('POSTS API', function() {
     });
   });
   test('check for deleted post', function(done) {
-    user1.get(port + '/api/posts/' + postId).end(function(res) {
-      // console.log(res.body)
-      assert.equal(res.status, 500);
-
-      done();
-    });
+    user1
+      .get(port + '/api/posts/' + postId)
+      .end(function(res) {
+        assert.equal(res.status, 500);
+        done();
+      }
+    );
   });
   suiteTeardown(function(done) {
     done();

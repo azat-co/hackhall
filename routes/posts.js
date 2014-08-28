@@ -23,7 +23,7 @@ exports.add = function(req, res, next) {
         console.error(err);
         next(err);
       } else {
-        res.json(200, docs);
+        res.status(200).json(docs);
       }
 
     });
@@ -72,13 +72,14 @@ exports.getPosts = function(req, res, next) {
     req.db.Post.count({}, function(err, total) {
       if (err) next(err);
       body.total = total;
-      res.json(200, body);
+      res.status(200).json(body);
     });
   });
 };
 
 
 exports.getPost = function(req, res, next) {
+
   if (req.params.id) {
     req.db.Post.findById(req.params.id, {
       title: true,
@@ -91,13 +92,13 @@ exports.getPost = function(req, res, next) {
     }, function(err, obj) {
       if (err) next(err);
       if (!obj) {
-        next('Nothing is found.');
+        next(new Error('Nothing is found.'));
       } else {
-        res.json(200, obj);
+        res.status(200).json(obj);
       }
     });
   } else {
-    next('No post id');
+    next(new Error('No post id'));
   }
 };
 
@@ -106,9 +107,9 @@ exports.del = function(req, res, next) {
     if (err) next(err);
     if (req.session.admin || req.session.userId === obj.author.id) {
       obj.remove();
-      res.json(200, obj);
+      res.status(200).json(obj);
     } else {
-      next('User is not authorized to delete post.');
+      next(new Error('User is not authorized to delete post.'));
     }
   })
 };
@@ -122,7 +123,7 @@ function likePost(req, res, next) {
     if (err) {
       next(err);
     } else {
-      res.json(200, obj);
+      res.status(200).json(obj);
     }
   });
 };
@@ -135,7 +136,7 @@ function watchPost(req, res, next) {
   }, {}, function(err, obj) {
     if (err) next(err);
     else {
-      res.json(200, obj);
+      res.status(200).json(obj);
     }
   });
 };
@@ -168,7 +169,7 @@ exports.updatePost = function(req, res, next) {
         new: true
       }, function(err, obj) {
         if (err) throw err;
-        res.json(200, obj);
+        res.status(200).json(obj);
       });
     }
     if (req.session.auth && req.session.userId && req.body && req.body.action != 'comment' &&
@@ -181,14 +182,14 @@ exports.updatePost = function(req, res, next) {
         doc.url = req.body.url || null;
         doc.save(function(e, d) {
           if (e) next(e);
-          res.json(200, d);
+          res.status(200).json(d);
         });
       })
     } else {
-      if (!anyAction) next('Something went wrong.');
+      if (!anyAction) next(new Error('Something went wrong.'));
     }
 
   } else {
-    next('No post ID.');
+    next(new Error('No post ID.'));
   }
 };

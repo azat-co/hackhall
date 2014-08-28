@@ -6,6 +6,10 @@ var app = require('../server').app,
 var user1 = request.agent();
 var port = 'http://localhost:' + app.get('port');
 
+var adminUser = {
+  email: 'admin-test@test.com',
+  password: 'admin-test'
+};
 
 app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
@@ -56,14 +60,10 @@ suite('Test root', function() {
 suite('Test log in', function() {
   setup(function(done) {
     console.log('setup');
-
     done();
   });
   test('login', function(done) {
-    user1.post('http://localhost:3000/api/login').send({
-      email: '1@1.com',
-      password: '1'
-    }).end(function(res) {
+    user1.post('http://localhost:3000/api/login').send(adminUser).end(function(res) {
       assert.equal(res.status, 200);
       done();
     });
@@ -108,13 +108,14 @@ suite('User control', function() {
     email: '2@2.com'
   };
   suiteSetup(function(done) {
-    user1.post('http://localhost:3000/api/login').send({
-      email: '1@1.com',
-      password: '1'
-    }).end(function(res) {
-      assert.equal(res.status, 200);
-      // done();
-    });
+    user1
+      .post('http://localhost:3000/api/login')
+      .send(adminUser)
+      .end(function(res) {
+        assert.equal(res.status, 200);
+        // done();
+        }
+      );
     user1.get('http://localhost:' + app.get('port') + '/api/profile').end(function(res) {
       assert.equal(res.status, 200);
       // console.log(res.text.length);
@@ -223,5 +224,5 @@ suite('User control', function() {
 
   });
 });
-// app.close();   
+// app.close();
 // console.log(app)

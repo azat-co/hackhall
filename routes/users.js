@@ -4,7 +4,7 @@ exports.getUsers = function(req, res, next) {
   if (req.session.auth && req.session.userId) {
     req.db.User.find({}, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, list) {
       if (err) next(err);
-      res.json(200, list);
+      res.status(200).json(list);
     });
   } else {
     next('User is not recognized.')
@@ -59,7 +59,7 @@ exports.getUser = function(req, res, next) {
                 return (el.author.id.toString() == obj._id.toString());
               }));
             });
-            res.json(200, obj);
+            res.status(200).json(obj);
           });
         });
       });
@@ -85,14 +85,14 @@ exports.update = function(req, res, next) {
     new: true
   }, function(err, obj) {
     if (err) next(err);
-    res.json(200, obj);
+    res.status(200).json(obj);
   });
 };
 
 exports.del = function(req, res, next) {
   req.db.User.findByIdAndRemove(req.params.id, function(err, obj) {
     if (err) next(err);
-    res.json(200, obj);
+    res.status(200).json(obj);
   });
 };
 
@@ -126,7 +126,7 @@ exports.findOrAddUser = function(req, res, next) {
         req.session.auth = true;
         req.session.userId = obj._id;
         req.session.user = obj;
-        req.session.admin = false; //assing regular user role by default                  
+        req.session.admin = false; //assing regular user role by default
         res.redirect('/#application');
         // }
       });

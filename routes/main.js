@@ -12,7 +12,7 @@ exports.checkUser = function(req, res, next) {
     console.info('Access USER: ' + req.session.userId);
     return next();
   } else {
-    next('User is not logged in.');
+    next(new Error('User is not logged in.'));
   }
 };
 
@@ -26,11 +26,11 @@ exports.checkApplicant = function(req, res, next) {
 };
 
 exports.login = function(req, res, next) {
+  console.log('Loging in USER with email:', req.body.email)
   req.db.User.findOne({
       email: req.body.email,
       password: req.body.password
-    },
-    null, {
+    },null, {
       safe: true
     },
     function(err, user) {
@@ -43,7 +43,7 @@ exports.login = function(req, res, next) {
           req.session.admin = true;
         }
         console.info('Login USER: ' + req.session.userId);
-        res.json(200, {
+        res.status(200).json({
           msg: 'Authorized'
         });
       } else {
@@ -111,7 +111,7 @@ exports.profile = function(req, res, next) {
                 return (el.author.id.toString() == obj._id.toString());
               }));
             });
-            res.json(200, obj);
+            res.status(200).json(obj);
           });
         });
       });
@@ -129,6 +129,6 @@ exports.delProfile = function(req, res, next) {
         next(err)
       }
     });
-    res.json(200, obj);
+    res.status(200).json(obj);
   });
 };

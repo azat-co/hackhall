@@ -35,7 +35,7 @@ exports.update = function(req, res, next) {
   }, function(err, obj) {
     if (err) next(err);
     if (!obj) next('Cannot save.')
-    res.json(200, obj);
+    res.status(200).json(obj);
   });
 };
 
@@ -44,6 +44,6 @@ exports.get = function(req, res, next) {
     'firstName lastName photoUrl headline displayName angelUrl facebookUrl twitterUrl linkedinUrl githubUrl', {}, function(err, obj) {
       if (err) next(err);
       if (!obj) next('cannot find');
-      res.json(200, obj);
+      res.status(200).json(obj);
     })
 };
