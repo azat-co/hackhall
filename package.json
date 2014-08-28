@@ -1,23 +1,23 @@
 {
-	"name": "hackhall",
-	"version": "0.0.1",
-	"private": true,
-	"main": "server",
-	"scripts": {
-		"start": "node server"
-	},
-	"dependencies": {
-		"express": ">=2.2.0",
-		"jade": "*",
-		"mongodb": "*",
-		"mongoose":"",
-		"oauth":"*"
-	},
-	"devDependencies":{
-		"mocha": "",
-		"superagent":""
-	},
-	"engines": {
-	  "node": ">=0.6"
-	}
+  "name": "hackhall",
+  "version": "0.1.0",
+  "private": true,
+  "main": "server",
+  "scripts": {
+    "start": "node server"
+  },
+  "dependencies": {
+    "express": ">=2.2.0",
+    "jade": "*",
+    "mongodb": "*",
+    "mongoose": "",
+    "oauth": "*"
+  },
+  "devDependencies": {
+    "mocha": "",
+    "superagent": ""
+  },
+  "engines": {
+    "node": ">=0.6"
+  }
 }
