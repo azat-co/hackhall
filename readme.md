@@ -1,4 +1,11 @@
-> Invite-only community and social collaboration platform for programmers, startupers, JavaScript professionals and pirates. 
+> Invite-only community and social collaboration platform for programmers, startupers, JavaScript professionals and pirates.
+
+
+## Express 4 Update
+
+This is Express 4.x version.
+
+For Express 3.x go to [release 0.1.0](https://github.com/azat-co/hackhall/releases/tag/v0.1.0).
 
 
 ## Live Demo
