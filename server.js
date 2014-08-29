@@ -20,9 +20,6 @@ var hs = require(path.join(__dirname, 'lib', 'hackhall-sendgrid'));
 var GitHubStrategy = require('passport-github').Strategy,
   passport = require('passport');
 
-var GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
-var GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
-
 var app = express();
 
 app.set('port', process.env.PORT || 3000  );
@@ -111,14 +108,14 @@ passport.deserializeUser(function(obj, done) {
 });
 if (process.env.NODE_ENV ==='production') {
   var gitHubOptions = {
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET,
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://hackhall.com/auth/github/callback'
   };
 } else {
   var gitHubOptions = {
-    clientID: GITHUB_CLIENT_ID_LOCAL,
-    clientSecret: GITHUB_CLIENT_SECRET_LOCAL,
+    clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   };
 }

@@ -6,7 +6,7 @@ test:
 	echo Seeding *********************************************************
 	node seed.js
 	echo Starting test *********************************************************
-	./node_modules/mocha/bin/mocha \
+	foreman run ./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \
 	tests/*.js
