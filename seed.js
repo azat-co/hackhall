@@ -1,5 +1,8 @@
+var bcrypt = require('bcryptjs');
+var async = require('async');
 var mongo =  require ('mongodb');
 var objectId = mongo.ObjectID;
+
 seedUsers = [
 	{
 		firstName:	"Admin",
@@ -27,6 +30,16 @@ seedUsers = [
     approved: true
 	}
 ];
+var hashPassword = function (user, callback) {
+	// bcypt stores salts inside of the hashed passwords so no need to store salt separately
+	bcrypt.hash(user.password, 10, function(error, hash) {
+		if (error) throw error;
+		user.password = hash;
+		callback(null, user);
+		// return user;
+	});
+};
+
 var db;
 var invites;
 var users;
@@ -44,8 +57,22 @@ mongo.Db.connect(dbUrl, function(error, client){
 		users.remove(function(){});
 		// posts.remove();
 		invites.insert({code:'smrules'}, function(){});
-		users.insert(seedUsers, function(){});
-		posts.insert({title:'test',text:'testbody',author:{name:seedUsers[0].displayName, id:seedUsers[0]._id}}, function(){});
+		posts.insert({
+			title:'test',
+			text:'testbody',
+			author: {
+				name:seedUsers[0].displayName,
+				id:seedUsers[0]._id
+			}
+		}, function(){});
+		async.map(seedUsers, hashPassword, function(error, result){
+			console.log(result);
+			seedUsers = result;
+			users.insert(seedUsers, function(){});
+			db.close();
+		});
+
+
 	}
-	db.close();
+
 });

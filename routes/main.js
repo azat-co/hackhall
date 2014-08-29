@@ -1,3 +1,5 @@
+var bcrypt = require('bcryptjs');
+
 exports.checkAdmin = function(request, response, next) {
   if (request.session && request.session.auth && request.session.userId && request.session.admin) {
     console.info('Access ADMIN: ' + request.session.userId);
@@ -28,23 +30,28 @@ exports.checkApplicant = function(req, res, next) {
 exports.login = function(req, res, next) {
   console.log('Loging in USER with email:', req.body.email)
   req.db.User.findOne({
-      email: req.body.email,
-      password: req.body.password
+      email: req.body.email
     },null, {
       safe: true
     },
     function(err, user) {
       if (err) return next(err);
       if (user) {
-        req.session.auth = true;
-        req.session.userId = user._id.toHexString();
-        req.session.user = user;
-        if (user.admin) {
-          req.session.admin = true;
-        }
-        console.info('Login USER: ' + req.session.userId);
-        res.status(200).json({
-          msg: 'Authorized'
+        bcrypt.compare(req.body.password, user.password, function(err, match) {
+          if (match) {
+            req.session.auth = true;
+            req.session.userId = user._id.toHexString();
+            req.session.user = user;
+            if (user.admin) {
+              req.session.admin = true;
+            }
+            console.info('Login USER: ' + req.session.userId);
+            res.status(200).json({
+              msg: 'Authorized'
+            });
+          } else {
+            next(new Error('Wrong password'));
+          }
         });
       } else {
         next(new Error('User is not found.'));
