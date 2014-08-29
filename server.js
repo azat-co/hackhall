@@ -109,13 +109,22 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
-
-
-passport.use(new GitHubStrategy({
+if (process.env.NODE_ENV ==='production') {
+  var gitHubOptions = {
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
+    callbackURL: 'http://hackhall.com/auth/github/callback'
+  };
+} else {
+  var gitHubOptions = {
+    clientID: GITHUB_CLIENT_ID_LOCAL,
+    clientSecret: GITHUB_CLIENT_SECRET_LOCAL,
     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
-  },
+  };
+}
+
+
+passport.use(new GitHubStrategy(gitHubOptions,
   function(accessToken, refreshToken, profile, done) {
     // console.log(profile)
     var firstName = profile._json.name,
