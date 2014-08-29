@@ -1,18 +1,18 @@
 define ([
-	'libs/text!tpl/usersSub.html' 
+	'libs/text!tpl/usersSub.html'
 ], function (usersSubTpl){
 	return Backbone.View.extend({
 		tagName: "div",
 		className: "item span3",
 		// model: PostModel,
-		template: usersSubTpl,	
+		template: usersSubTpl,
 		events: {
 			'click .promote': 'promote',
 			'click .demote': 'demote',
 			'click .approve': 'approve',
 			'click .ban': 'ban',
 			'click .delete': 'delete'
-						
+
 		},
 		initialize: function(options) {
 			this.model = options.model;
@@ -30,53 +30,54 @@ define ([
 			console.log('promote'+this.model.id);
 			this.model.attributes.admin = true;
 			this.model.save({},{
-				xhrFeilds:creds, 
+				xhrFeilds:creds,
 				success: function(model, response) {
 					app.alertsView.success("Promoted!");
 				},
 				error: function(model,response){
-					app.alertsView.error (response);					
+					app.alertsView.error (response);
 				}
-			});			
+			});
 		},
 		demote: function () {
-			console.log('demote'+this.model.id);			
+			console.log('demote'+this.model.id);
 			this.model.attributes.admin = false;
 			this.model.save({},{
-				xhrFeilds:creds, 
+				xhrFeilds:creds,
 				success: function(model, response) {
 					app.alertsView.success("Demoted!");
 				},
 				error: function(model,response){
-					app.alertsView.error (response);					
+					app.alertsView.error (response);
 				}
-			});			
+			});
 		},
 		delete: function () {
 			console.log('delete'+this.model.id);
 			this.model.destroy({
 				success: function(model,response){
-					console.log(app.alertsView.collection);		
+					console.log(app.alertsView.collection);
 					app.alertsView.success("Deleted!");
 				},
 				error: function(model, response){
-					console.log(response);					
+					console.log(response);
 					app.alertsView.error (response);
 				}
 			});
-				
+
 		},
 		approve: function(){
 			console.log('approve'+this.model.id)
 			this.model.attributes.approved = true;
+			this.model.attributes.approvedNow = true; //this flag is needed to differentiate between approval update and all others
 			// this.model.attributes.watch = true;
 			this.model.save({},{
-				xhrFeilds:creds, 
+				xhrFeilds:creds,
 				success: function(model, response) {
-					app.alertsView.success("Approved!");						
+					app.alertsView.success("Approved!");
 				},
 				error: function(model,response){
-					app.alertsView.error (response);					
+					app.alertsView.error (response);
 				}
 			});
 		},
@@ -84,15 +85,15 @@ define ([
 			console.log('ban'+this.model.id)
 			this.model.attributes.banned = true;
 			this.model.save({},{
-				xhrFeilds:creds, 
+				xhrFeilds:creds,
 				success: function(model, response) {
 					app.alertsView.success("Banned!");
 				},
 				error: function(model,response){
-					app.alertsView.error (response);					
+					app.alertsView.error (response);
 				}
 			});
-		}		
-		
+		}
+
 	});
 });

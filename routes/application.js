@@ -30,11 +30,12 @@ exports.update = function(req, res, next) {
     }
   });
   delete data._id;
+
   req.db.User.findByIdAndUpdate(req.session.user._id, {
     $set: data
   }, function(err, obj) {
-    if (err) next(err);
-    if (!obj) next('Cannot save.')
+    if (err) return next(err);
+    if (!obj) return next('Cannot save.');
     res.status(200).json(obj);
   });
 };

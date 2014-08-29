@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var roles = 'user staff mentor investor founder'.split(' ');
+var findOrCreate = require('mongoose-findorcreate');
 
 exports.Post = new Schema ({
   title: {
@@ -27,24 +28,24 @@ exports.Post = new Schema ({
       max:2000
     },
     author: {
-      id: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'User' 
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
       },
       name: String
     }
   }],
-  watches: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: 'User' 
+  watches: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }],
   likes: [{
-    type: Schema.Types.ObjectId, 
+    type: Schema.Types.ObjectId,
     ref: 'User'
   }],
   author: {
-    id: { 
-      type: Schema.Types.ObjectId, 
+    id: {
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
@@ -53,28 +54,30 @@ exports.Post = new Schema ({
       required: true
     }
   },
-  created: { 
-    type: Date, 
+  created: {
+    type: Date,
     default: Date.now,
     required: true
   },
-  updated:  { 
-    type: Date, 
-    default: Date.now, 
+  updated:  {
+    type: Date,
+    default: Date.now,
     required: true
-  },  
+  },
   own: Boolean,
   like: Boolean,
   watch: Boolean,
   admin: Boolean,
-  action: String  
+  action: String
 });
 
-exports.User = new Schema({
+var User = new Schema({
   angelListId: String,
   angelListProfile: Schema.Types.Mixed,
-  angelToken: String, 
-    firstName: {
+  angelToken: String,
+  githubProfile: Schema.Types.Mixed,
+  githubToken: String,
+  firstName: {
     type: String,
     required: true,
     trim: true
@@ -108,20 +111,20 @@ exports.User = new Schema({
   banned: {
     type: Boolean,
     default: false
-  },  
+  },
   admin: {
     type: Boolean,
     default: false
-  },  
+  },
   headline: String,
   photoUrl: String,
   angelList: Schema.Types.Mixed,
-  created: { 
-    type: Date, 
-    default: Date.now 
+  created: {
+    type: Date,
+    default: Date.now
   },
-  updated:  { 
-    type: Date, default: Date.now 
+  updated:  {
+    type: Date, default: Date.now
   },
   angelUrl: String,
   twitterUrl: String,
@@ -136,3 +139,7 @@ exports.User = new Schema({
     comments: [Schema.Types.Mixed]
   }
 });
+
+
+User.plugin(findOrCreate);
+exports.User = User;

@@ -1,20 +1,24 @@
-objectId = require('mongodb').ObjectID;
+var path = require('path'),
+  hs = require(path.join(__dirname, '..', 'lib', 'hackhall-sendgrid'));
+
+var objectId = require('mongodb').ObjectID;
+
 
 exports.getUsers = function(req, res, next) {
   if (req.session.auth && req.session.userId) {
     req.db.User.find({}, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, list) {
-      if (err) next(err);
+      if (err) return next(err);
       res.status(200).json(list);
     });
   } else {
-    next('User is not recognized.')
+    return next('User is not recognized.')
   }
 }
 
 exports.getUser = function(req, res, next) {
   req.db.User.findById(req.params.id, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
-    if (err) next(err);
-    if (!obj) next(new Error('User is not found'));
+    if (err) return next(err);
+    if (!obj) return next(new Error('User is not found'));
     req.db.Post.find({
       author: {
         id: obj._id,
@@ -52,9 +56,9 @@ exports.getUser = function(req, res, next) {
               'created': -1
             }
           }, function(err, list) {
-            if (err) next(err);
+            if (err) return next(err);
             obj.posts.comments = [];
-            list.forEach(function(value, key, list) {
+            list.forEach(function(value, key, list) { // async?
               obj.posts.comments.push(value.comments.filter(function(el, i, arr) {
                 return (el.author.id.toString() == obj._id.toString());
               }));
@@ -76,16 +80,27 @@ exports.add = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+  // console.log(req.body);
   var obj = req.body;
   obj.updated = new Date();
   delete obj._id;
+  var approvedNow = obj.approved && obj.approvedNow;
+  delete obj.approved_now;
   req.db.User.findByIdAndUpdate(req.params.id, {
     $set: obj
   }, {
     new: true
-  }, function(err, obj) {
-    if (err) next(err);
-    res.status(200).json(obj);
+  }, function(err, user) {
+    if (err) return next(err);
+    if (approvedNow && user.approved) {
+      console.log('Approved... sending notification!')
+      hs.notifyApproved(user, function(error, user){
+        if (error) return next(error);
+        res.status(200).json(user);
+      })
+    } else {
+      res.status(200).json(user);
+    }
   });
 };
 
@@ -102,7 +117,7 @@ exports.findOrAddUser = function(req, res, next) {
     angelListId: data.id
   }, function(err, obj) {
     console.log('angelListLogin4');
-    if (err) next(err);
+    if (err) return next(err);
     console.warn(obj);
     if (!obj) {
       req.db.User.create({
@@ -121,15 +136,16 @@ exports.findOrAddUser = function(req, res, next) {
         linkedinUrl: data.linkedin_url,
         githubUrl: data.github_url
       }, function(err, obj) { //remember the scope of variables!
-        if (err) next(err);
-        console.log(obj);
-        req.session.auth = true;
-        req.session.userId = obj._id;
-        req.session.user = obj;
-        req.session.admin = false; //assing regular user role by default
-        res.redirect('/#application');
-        // }
-      });
+          if (err) return next(err);
+          console.log(obj);
+          req.session.auth = true;
+          req.session.userId = obj._id;
+          req.session.user = obj;
+          req.session.admin = false; //assing regular user role by default
+          res.redirect('/#application');
+          // }
+        }
+      );
     } else { //user is in the database
       req.session.auth = true;
       req.session.userId = obj._id;
