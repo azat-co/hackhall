@@ -3,10 +3,10 @@ var path = require('path'),
 
 var objectId = require('mongodb').ObjectID;
 
-
+var safeFields = 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl';
 exports.getUsers = function(req, res, next) {
   if (req.session.auth && req.session.userId) {
-    req.db.User.find({}, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, list) {
+    req.db.User.find({}, safeFields, function(err, list) {
       if (err) return next(err);
       res.status(200).json(list);
     });
@@ -16,14 +16,14 @@ exports.getUsers = function(req, res, next) {
 }
 
 exports.getUser = function(req, res, next) {
-  req.db.User.findById(req.params.id, 'email firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
+  var fields = safeFields;
+  if (req.session.admin) {
+    fields = fields + ' email';
+  }
+  req.db.User.findById(req.params.id, fields, function(err, obj) {
     if (err) return next(err);
     if (!obj) return next(new Error('User is not found'));
-    if (req.session.admin) {
 
-    } else {
-      delete obj.email;
-    }
     req.db.Post.find({
       author: {
         id: obj._id,
