@@ -170,7 +170,7 @@ app.get('/auth/github/callback',
       req.session.auth = true;
       req.session.userId = req.user._id;
       req.session.user = req.user;
-      req.session.admin = false;
+      req.session.admin = req.user.admin;
     }
     if (req.user.approved) {
       res.redirect('/#posts');
