@@ -16,9 +16,14 @@ exports.getUsers = function(req, res, next) {
 }
 
 exports.getUser = function(req, res, next) {
-  req.db.User.findById(req.params.id, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
+  req.db.User.findById(req.params.id, 'email firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
     if (err) return next(err);
     if (!obj) return next(new Error('User is not found'));
+    if (req.session.admin) {
+
+    } else {
+      delete obj.email;
+    }
     req.db.Post.find({
       author: {
         id: obj._id,
@@ -93,9 +98,10 @@ exports.update = function(req, res, next) {
   }, function(err, user) {
     if (err) return next(err);
     if (approvedNow && user.approved) {
-      console.log('Approved... sending notification!')
+      console.log('Approved... sending notification!');
       hs.notifyApproved(user, function(error, user){
         if (error) return next(error);
+        console.log('Notification was sent.');
         res.status(200).json(user);
       })
     } else {

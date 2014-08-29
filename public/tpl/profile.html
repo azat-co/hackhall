@@ -1,9 +1,9 @@
 <div class="row-fluid">
 	<div class="span2"></div>
-	<div class="span8">	
+	<div class="span8">
 		<div class="pull-left span4">
 		<p><img src="<%= (attr.photoUrl) ? attr.photoUrl : '/img/user.png' %>" class="img-polaroid" /></p>
-		<h2><%= attr.displayName %></h2>	
+		<h2><%= attr.displayName %></h2>
 		<p>Role:
 		<% var roles = 'user staff mentor investor founder'.split(' ');
 		if (profile.admin) { %>
@@ -18,8 +18,8 @@
 		<% }
 		else { %>
  			<%= (attr.role=='admin')? '<span class="label label-important">admin</span>' : '' %>
-			<%= (attr.role=='user')? '<span class="label label-info">user</span>' : '' %>						
-			<%= (!attr.role)? '<span class="label label-info">user</span>' : '' %>						
+			<%= (attr.role=='user')? '<span class="label label-info">user</span>' : '' %>
+			<%= (!attr.role)? '<span class="label label-info">user</span>' : '' %>
 		<% } %>
 		</p>
 		<p>Likes: <%= attr.posts.likes.length %></p>
@@ -30,13 +30,14 @@
 		</div>
 		<div class="well pull-left span5">
 			<p><%= (attr.headline)? attr.headline : attr.displayName %></p>
+			<%= (attr.email)? '<p>Email: </p>' + attr.email : '' %>
 			<p><strong>Links</strong>:
-	 			<%= (attr.angelUrl) ? '<a href="'+attr.angelUrl+'" target="_blank">'+attr.angelUrl+'</a>' : '' %>	<br/>					
-				<%= (attr.twitterUrl) ? '<a href="'+attr.twitterUrl+'" target="_blank">'+attr.twitterUrl+'</a>' : '' %><br/>											
-				<%= (attr.facebookUrl) ? '<a href="'+attr.facebookUrl+'" target="_blank">'+attr.facebookUrl+'</a>' : '' %><br/>											
-				<%= (attr.linkedinUrl) ? '<a href="'+attr.linkedinUrl+'" target="_blank">'+attr.linkedinUrl+'</a>' : '' %><br/>											
-				<%= (attr.githubUrl) ? '<a href="'+attr.githubUrl+'" target="_blank">'+attr.githubUrl+'</a>' : '' %>						
-			</p>			
+	 			<%= (attr.angelUrl) ? '<a href="'+attr.angelUrl+'" target="_blank">'+attr.angelUrl+'</a>' : '' %>	<br/>
+				<%= (attr.twitterUrl) ? '<a href="'+attr.twitterUrl+'" target="_blank">'+attr.twitterUrl+'</a>' : '' %><br/>
+				<%= (attr.facebookUrl) ? '<a href="'+attr.facebookUrl+'" target="_blank">'+attr.facebookUrl+'</a>' : '' %><br/>
+				<%= (attr.linkedinUrl) ? '<a href="'+attr.linkedinUrl+'" target="_blank">'+attr.linkedinUrl+'</a>' : '' %><br/>
+				<%= (attr.githubUrl) ? '<a href="'+attr.githubUrl+'" target="_blank">'+attr.githubUrl+'</a>' : '' %>
+			</p>
 		</div>
 	</div>
 	<div class="span2"></div>
@@ -61,7 +62,7 @@
 		<div class="controls">
 			<a href="#delete-confirm-modal" role="button" class="btn  btn-danger btn-block" data-toggle="modal">Delete Account</a>
 		</div>
-		
+
 		<div id="delete-confirm-modal" class="modal hide"  tabindex="-1" role="dialog" aria-labelledby="edit-label" aria-hidden="true" data-backdrop="static">
 		  <div class="modal-header">
 		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -69,12 +70,12 @@
 		  </div>
 		  <div class="modal-body">
 			Are you sure?
-		  </div> 
+		  </div>
 		  <div class="modal-footer">
 		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 		    <a class="btn btn-danger" id="delete" >Yes</a>
 		  </div>
-		</div>		
+		</div>
 	</div>
 	<div class="span2">
 	</div>
