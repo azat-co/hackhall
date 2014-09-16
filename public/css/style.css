@@ -21,3 +21,6 @@ div#users-box div.item img {
 div#users-box div.item .user-name {
 	margin-bottom:0.5em;
 }
+.item img.user-sub-photo {
+ width: 140px;
+}

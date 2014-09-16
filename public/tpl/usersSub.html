@@ -7,33 +7,33 @@
 			%> <a class="btn btn-info edit-post" title="Edit"><i class="icon-edit"></i></a> <%
 		}
 		else {
-		%> 
+		%>
 		<!--
-		<a class="btn <%= (model.attributes.like) ? 'disabled' : '' %> like-post" title="Like"><i class="icon-thumbs-up"></i></a> 
+		<a class="btn <%= (model.attributes.like) ? 'disabled' : '' %> like-post" title="Like"><i class="icon-thumbs-up"></i></a>
 		<a class="btn <%= (model.attributes.watch) ? 'disabled' : '' %> watch-post"  title="Watch"><i class="icon-eye-open"></i></a>
 		-->
 		<%
 		} %>
 
 	  </div>
-	</div>	
+	</div>
 <!--	<a href="/#people/<%= model.attributes._id %>" > <%= model.attributes.displayName %></a>
 
 	-->
 	<div>
 	<a href="/#people/<%= model.attributes._id %>" title="<%= model.attributes.displayName %>" >
-			<img src="<%= (model.attributes.photoUrl) ? model.attributes.photoUrl : '/img/user.png' %>" class="img-polaroid" />
+			<img src="<%= (model.attributes.photoUrl) ? model.attributes.photoUrl : '/img/user.png' %>" class="img-polaroid user-sub-photo" />
 	</a>
 	</div>
 	<div class="">
 		<div class="user-name">
 			<a href="/#people/<%= model.attributes._id %>" title="<%= model.attributes.displayName %>" > <%= model.attributes.displayName %></a>
 
-			<%= (model.attributes.role=='admin' || model.attributes.admin)? '<span class="label label-important">admin</span>' : '' %> 
+			<%= (model.attributes.role=='admin' || model.attributes.admin)? '<span class="label label-important">admin</span>' : '' %>
 			<!-- <%= (model.attributes.role=='user')? '<span class="label label-info">user</span>' : '' %>		 -->
 			<!-- <%= (!model.attributes.role)? '<span class="label label-info">user</span>' : '' %>					 -->
 			<span class="label label-info"><%= model.attributes.role %></span>
-			
+
 			<% if (model.profile.admin) {%>
 		</div>
 			<div class="btn-group">
@@ -50,7 +50,7 @@
 			    <li class="divider"></li>
 				<% if (model.attributes.admin) {%>
 				    <li><a  class="demote"><i class="icon-chevron-down"></i> Demote admin</a></li>
-				<% } 
+				<% }
 				else {%>
 				    <li><a class="promote"><i class="icon-chevron-up"></i> Make admin</a></li>
 				<%}%>
@@ -59,4 +59,4 @@
 			<%}%>
 
 	</div>
-	
+
