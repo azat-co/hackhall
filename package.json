@@ -16,6 +16,7 @@
     "errorhandler": "1.1.1",
     "express": "4.8.1",
     "express-session": "1.7.6",
+    "jade": "1.6.0",
     "method-override": "2.1.3",
     "mongodb": "1.4.9",
     "mongoose": "3.8.15",
