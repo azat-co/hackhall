@@ -33,6 +33,6 @@
     "superagent": "0.18.2"
   },
   "engines": {
-    "node": ">=0.10"
+    "node": "0.10.x"
   }
 }
