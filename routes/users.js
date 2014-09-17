@@ -118,17 +118,17 @@ exports.del = function(req, res, next) {
 };
 
 exports.findOrAddUser = function(req, res, next) {
-  data = req.angelProfile;
+  var data = req.angelProfile;
   req.db.User.findOne({
     angelListId: data.id
   }, function(err, obj) {
-    console.log('angelListLogin4');
+    console.log('angelList Login findOrAddUser');
     if (err) return next(err);
-    console.warn(obj);
     if (!obj) {
+      console.warn('Creating a user', obj, data);
       req.db.User.create({
         angelListId: data.id,
-        angelToken: token,
+        angelToken: req.session.angelListAccessToken,
         angelListProfile: data,
         email: data.email,
         firstName: data.name.split(' ')[0],
@@ -143,7 +143,7 @@ exports.findOrAddUser = function(req, res, next) {
         githubUrl: data.github_url
       }, function(err, obj) { //remember the scope of variables!
           if (err) return next(err);
-          console.log(obj);
+          console.log('User was created', obj);
           req.session.auth = true;
           req.session.userId = obj._id;
           req.session.user = obj;
