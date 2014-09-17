@@ -6,6 +6,8 @@ var express = require('express'),
   oauth = require('oauth'),
   querystring = require('querystring');
 
+var jade = require('jade');
+
 var favicon = require('serve-favicon'),
   logger = require('morgan'),
   bodyParser = require('body-parser'),
