@@ -4,6 +4,7 @@ var path = require('path'),
 var objectId = require('mongodb').ObjectID;
 
 var safeFields = 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl';
+
 exports.getUsers = function(req, res, next) {
   if (req.session.auth && req.session.userId) {
     req.db.User.find({}, safeFields, function(err, list) {
@@ -90,7 +91,7 @@ exports.update = function(req, res, next) {
   obj.updated = new Date();
   delete obj._id;
   var approvedNow = obj.approved && obj.approvedNow;
-  delete obj.approved_now;
+  delete obj.approvedNow;
   req.db.User.findByIdAndUpdate(req.params.id, {
     $set: obj
   }, {
