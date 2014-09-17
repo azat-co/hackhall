@@ -87,9 +87,10 @@ function db (req, res, next) {
   };
   return next();
 }
-checkUser = routes.main.checkUser;
-checkAdmin = routes.main.checkAdmin;
-checkApplicant = routes.main.checkApplicant;
+
+var checkUser = routes.main.checkUser;
+var checkAdmin = routes.main.checkAdmin;
+var checkApplicant = routes.main.checkApplicant;
 
 
 app.get('/auth/angellist', routes.auth.angelList);
