@@ -1,11 +1,13 @@
-var https = require('https');
+var https = require('https'),
+    conf = require('../conf.js');
+
 
 if (process.env.NODE_ENV === 'production') {
-  var angelListClientId = process.env.ANGELLIST_CLIENT_ID;
-  var angelListClientSecret = process.env.ANGELLIST_CLIENT_SECRET;
+  var angelListClientId = conf.ANGELLIST_CLIENT_ID;
+  var angelListClientSecret = conf.ANGELLIST_CLIENT_SECRET;
 } else {
-  var angelListClientId = process.env.ANGELLIST_CLIENT_ID_LOCAL;
-  var angelListClientSecret = process.env.ANGELLIST_CLIENT_SECRET_LOCAL;
+  var angelListClientId = conf.ANGELLIST_CLIENT_ID_LOCAL;
+  var angelListClientSecret = conf.ANGELLIST_CLIENT_SECRET_LOCAL;
 }
 
 exports.angelList = function(req, res) {
