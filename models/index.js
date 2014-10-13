@@ -92,8 +92,8 @@ var User = new Schema({
     required: true,
     trim: true
   },
-    password: String,
-    email: {
+  password: String,
+  email: {
     type: String,
     required: true,
     trim: true
