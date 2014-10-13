@@ -1,0 +1,10 @@
+Hackhall Specific Git Command Files
+
+
+git push origin
+
+git pull origin
+
+git push staging
+
+git push production
