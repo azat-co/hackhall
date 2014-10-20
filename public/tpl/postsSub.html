@@ -30,7 +30,8 @@
 </div>
 
 <h3><a href="<%= (attr.url) ? attr.url : '/#posts/'+attr._id %>" <%=(attr.url) ? ' target="_blank" ':''%> > <%= attr.title %></a><small><%= (attr.url)? ' ('+attr.url+')': '' %> </small></h3>
-<p><small>by <a href="/#people/<%= attr.author.id %>"><%= attr.author.name %></a> 
+<p><small>by <a href="/#people/<%= attr.author.id %>"><%= attr.author.name %></a>&nbsp;on&nbsp;<a href="">
+	<% var date = new Date(attr.created); date = date.toDateString(); %><%= date %></a>
 	<%= (attr.likes && attr.likes.length>0) ? '| Likes: '+attr.likes.length :'' %>
 	<%= (attr.comments && attr.comments.length>0) ? '| Comments: '+attr.comments.length :'' %>
 	<%= (attr.watches && attr.watches.length>0) ? '| Watches: '+attr.watches.length :'' %>
