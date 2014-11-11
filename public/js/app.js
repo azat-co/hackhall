@@ -320,7 +320,11 @@ require([
 		}	
 	});
 	UsersCollection = Backbone.Collection.extend({
-		url: "/api/users"		
+		url: "/api/users",
+		comparator: function(m) {
+			var temp = new Date(m.get('created')).toLocaleDateString();			
+        	m.set('created',temp);        	
+    	}		
 	});	
 	HeaderModel = Backbone.Model.extend({		
 
