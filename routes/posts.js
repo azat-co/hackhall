@@ -41,34 +41,37 @@ exports.getPosts = function(req, res, next) {
     sort: {
       '_id': -1
     }
-  }, function(err, obj) {
-    if (!obj) next('There are not posts.');
-    obj.forEach(function(item, i, list) {
+  }, function(err, docs) {
+    if (!docs) next('There are not posts.');
+    var posts = [];
+    docs.forEach(function(doc, i, list) {
+      var item = doc.toObject();
       if (req.session.user.admin) {
         item.admin = true;
       } else {
         item.admin = false;
       }
-      if (item.author.id == req.session.userId) {
+      if (doc.author.id == req.session.userId) {
         item.own = true;
       } else {
         item.own = false;
       }
-      if (item.likes && item.likes.indexOf(req.session.userId) > -1) {
+      if (doc.likes && doc.likes.indexOf(req.session.user._id) > -1) {
         item.like = true;
       } else {
         item.like = false;
       }
-      if (item.watches && item.watches.indexOf(req.session.userId) > -1) {
+      if (doc.watches && doc.watches.indexOf(req.session.user._id) > -1) {
         item.watch = true;
       } else {
         item.watch = false;
       }
+      posts.push(item);
     });
     var body = {};
     body.limit = limit;
     body.skip = skip;
-    body.posts = obj;
+    body.posts = posts;
     req.db.Post.count({}, function(err, total) {
       if (err) next(err);
       body.total = total;
@@ -147,12 +150,10 @@ exports.updatePost = function(req, res, next) {
     if (req.body && req.body.action == 'like') {
       anyAction = true;
       likePost(req, res);
-    }
-    if (req.body && req.body.action == 'watch') {
+    } else if (req.body && req.body.action == 'watch') {
       anyAction = true;
       watchPost(req, res);
-    }
-    if (req.body && req.body.action == 'comment' && req.body.comment && req.params.id) {
+    } else if (req.body && req.body.action == 'comment' && req.body.comment && req.params.id) {
       anyAction = true;
       req.db.Post.findByIdAndUpdate(req.params.id, {
         $push: {
@@ -171,8 +172,7 @@ exports.updatePost = function(req, res, next) {
         if (err) throw err;
         res.status(200).json(obj);
       });
-    }
-    if (req.session.auth && req.session.userId && req.body && req.body.action != 'comment' &&
+    } else if (req.session.auth && req.session.userId && req.body && req.body.action != 'comment' &&
       req.body.action != 'watch' && req.body != 'like' &&
       req.params.id && (req.body.author.id == req.session.user._id || req.session.user.admin)) {
       req.db.Post.findById(req.params.id, function(err, doc) {

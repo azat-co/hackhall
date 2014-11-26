@@ -63,12 +63,7 @@ var Post = new Schema ({
     type: Date,
     default: Date.now,
     required: true
-  },
-  own: Boolean,
-  like: Boolean,
-  watch: Boolean,
-  admin: Boolean,
-  action: String
+  }
 });
 
 Post.pre('save', function (next) {
