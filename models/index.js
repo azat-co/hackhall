@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 var roles = 'user staff mentor investor founder'.split(' ');
 var findOrCreate = require('mongoose-findorcreate');
 
-exports.Post = new Schema ({
+var Post = new Schema ({
   title: {
     required: true,
     type: String,
@@ -70,6 +70,11 @@ exports.Post = new Schema ({
   admin: Boolean,
   action: String
 });
+
+Post.pre('save', function (next) {
+  if (!this.isModified('updated')) this.updated = new Date;
+  next();
+})
 
 var User = new Schema({
   angelListId: String,
@@ -142,4 +147,67 @@ var User = new Schema({
 
 
 User.plugin(findOrCreate);
+
+User.statics.findProfileById = function(id, fields, callback) {
+  var User = this;
+  var Post = User.model('Post');
+
+  return User.findById(id, fields, function(err, obj) {
+    if (err) return callback(err);
+    if (!obj) return callback(new Error('User is not found'));
+
+    Post.find({
+      author: {
+        id: obj._id,
+        name: obj.displayName
+      }
+    }, null, {
+      sort: {
+        'created': -1
+      }
+    }, function(err, list) {
+      if (err) return callback(err);
+      obj.posts.own = list || [];
+      Post.find({
+        likes: obj._id
+      }, null, {
+        sort: {
+          'created': -1
+        }
+      }, function(err, list) {
+        if (err) return callback(err);
+        obj.posts.likes = list || [];
+        Post.find({
+          watches: obj._id
+        }, null, {
+          sort: {
+            'created': -1
+          }
+        }, function(err, list) {
+          if (err) return callback(err);
+          obj.posts.watches = list || [];
+          Post.find({
+            'comments.author.id': obj._id
+          }, null, {
+            sort: {
+              'created': -1
+            }
+          }, function(err, list) {
+            if (err) return callback(err);
+            obj.posts.comments = [];
+            list.forEach(function(post, key, arr) {
+              post.comments.forEach(function(comment, key, arr) {
+                if (comment.author.id.toString() == obj._id.toString())
+                  obj.posts.comments.push(comment);
+              });
+            });
+            callback(null, obj);
+          });
+        });
+      });
+    });
+  });
+}
+
+exports.Post = Post;
 exports.User = User;

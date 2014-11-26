@@ -21,60 +21,10 @@ exports.getUser = function(req, res, next) {
   if (req.session.admin) {
     fields = fields + ' email';
   }
-  req.db.User.findById(req.params.id, fields, function(err, obj) {
+  req.db.User.findProfileById(req.params.id, fields, function(err, data){
     if (err) return next(err);
-    if (!obj) return next(new Error('User is not found'));
-
-    req.db.Post.find({
-      author: {
-        id: obj._id,
-        name: obj.displayName
-      }
-    }, null, {
-      sort: {
-        'created': -1
-      }
-    }, function(err, list) {
-      if (err) next(err);
-      obj.posts.own = list || [];
-      req.db.Post.find({
-        likes: obj._id
-      }, null, {
-        sort: {
-          'created': -1
-        }
-      }, function(err, list) {
-        if (err) next(err);
-        obj.posts.likes = list || [];
-        req.db.Post.find({
-          watches: obj._id
-        }, null, {
-          sort: {
-            'created': -1
-          }
-        }, function(err, list) {
-          if (err) next(err);
-          obj.posts.watches = list || [];
-          req.db.Post.find({
-            'comments.author.id': obj._id
-          }, null, {
-            sort: {
-              'created': -1
-            }
-          }, function(err, list) {
-            if (err) return next(err);
-            obj.posts.comments = [];
-            list.forEach(function(value, key, list) { // async?
-              obj.posts.comments.push(value.comments.filter(function(el, i, arr) {
-                return (el.author.id.toString() == obj._id.toString());
-              }));
-            });
-            res.status(200).json(obj);
-          });
-        });
-      });
-    });
-  });
+    res.status(200).json(data);
+  })
 };
 
 exports.add = function(req, res, next) {

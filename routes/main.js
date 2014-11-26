@@ -71,58 +71,13 @@ exports.logout = function(req, res) {
 };
 
 exports.profile = function(req, res, next) {
-  req.db.User.findById(req.session.userId, 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl', function(err, obj) {
-    if (err) next(err);
-    if (!obj) next(new Error('User is not found'));
-    req.db.Post.find({
-      author: {
-        id: obj._id,
-        name: obj.displayName
-      }
-    }, null, {
-      sort: {
-        'created': -1
-      }
-    }, function(err, list) {
-      if (err) next(err);
-      obj.posts.own = list || [];
-      req.db.Post.find({
-        likes: obj._id
-      }, null, {
-        sort: {
-          'created': -1
-        }
-      }, function(err, list) {
-        if (err) next(err);
-        obj.posts.likes = list || [];
-        req.db.Post.find({
-          watches: obj._id
-        }, null, {
-          sort: {
-            'created': -1
-          }
-        }, function(err, list) {
-          if (err) next(err);
-          obj.posts.watches = list || [];
-          req.db.Post.find({
-            'comments.author.id': obj._id
-          }, null, {
-            sort: {
-              'created': -1
-            }
-          }, function(err, list) {
-            if (err) next(err);
-            obj.posts.comments = [];
-            list.forEach(function(value, key, list) {
-              obj.posts.comments.push(value.comments.filter(function(el, i, arr) {
-                return (el.author.id.toString() == obj._id.toString());
-              }));
-            });
-            res.status(200).json(obj);
-          });
-        });
-      });
-    });
+  var fields = 'firstName lastName displayName' +
+    ' headline photoUrl admin approved banned' +
+    ' role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl';
+  req.db.User.findProfileById(req.session.userId, fields, function(err, obj) {
+    console.log('err', err)
+    if (err) return next(err);
+    res.status(200).json(obj);
   });
 };
 
