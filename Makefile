@@ -1,5 +1,5 @@
 REPORTER = list
-MOCHA_OPTS = --ui tdd --ignore-leaks
+MOCHA_OPTS = --ui tdd
 
 test:
 	clear
@@ -21,18 +21,30 @@ test-w:
 	tests/*.js
 
 users:
-	mocha tests/users.js --ui tdd --reporter list --ignore-leaks
+	clear
+	echo Starting test *********************************************************
+	foreman run ./node_modules/mocha/bin/mocha \
+	--reporter $(REPORTER) \
+	$(MOCHA_OPTS) \
+	tests/users.js
+	echo Ending test
 
 posts:
 	clear
 	echo Starting test *********************************************************
-	./node_modules/mocha/bin/mocha \
+	foreman run ./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \
 	tests/posts.js
 	echo Ending test
 
 application:
-	mocha tests/application.js --ui tdd --reporter list --ignore-leaks
+	clear
+	echo Starting test *********************************************************
+	foreman run ./node_modules/mocha/bin/mocha \
+	--reporter $(REPORTER) \
+	$(MOCHA_OPTS) \
+	tests/application.js
+	echo Ending test
 
 .PHONY: test test-w posts application

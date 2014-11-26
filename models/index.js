@@ -124,14 +124,14 @@ var User = new Schema({
     default: Date.now
   },
   updated:  {
-    type: Date, default: Date.now
+    type: Date,
+    default: Date.now
   },
   angelUrl: String,
   twitterUrl: String,
   facebookUrl: String,
   linkedinUrl: String,
   githubUrl: String,
-  own: Boolean,
   posts: {
     own: [Schema.Types.Mixed],
     likes: [Schema.Types.Mixed],

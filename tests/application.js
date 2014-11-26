@@ -1,3 +1,23 @@
+var bcrypt = require('bcryptjs');
+
+var user3 = {
+  firstName: 'Dummy',
+  lastName: 'Application',
+  displayName: 'Dummy Application',
+  password: bcrypt.hashSync('3', 10),
+  email: '3@3.com',
+  headline: 'Dummy Appliation',
+  photoUrl: '/img/user.png',
+  angelList: {blah:'blah'},
+  angelUrl: 'http://angel.co.com/someuser',
+  twitterUrl: 'http://twitter.com/someuser',
+  facebookUrl: 'http://facebook.com/someuser',
+  linkedinUrl: 'http://linkedin.com/someuser',
+  githubUrl: 'http://github.com/someuser'
+}
+
+
+var bcrypt = require('bcryptjs');
 var app = require ('../server').app,
   assert = require('assert'),
   request = require('superagent');
@@ -32,23 +52,10 @@ suite('APPLICATION API', function (){
     });
   });
   test('submit applicaton for user 3@3.com', function(done){
-    user1.post(port+'/api/application').send({
-        firstName: 'Dummy',
-      lastName: 'Application',
-      displayName: 'Dummy Application',
-        password: '3',
-        email: '3@3.com',
-      headline: 'Dummy Appliation',
-      photoUrl: '/img/user.png',
-      angelList: {blah:'blah'},
-      angelUrl: 'http://angel.co.com/someuser',
-      twitterUrl: 'http://twitter.com/someuser',
-      facebookUrl: 'http://facebook.com/someuser',
-      linkedinUrl: 'http://linkedin.com/someuser',
-      githubUrl: 'http://github.com/someuser'
-    }).end(function(res){
+    user1.post(port+'/api/application').send(user3).end(function(res){
       assert.equal(res.status,200);
       userId = res.body._id;
+      console.log('***', userId, res.body)
       done();
     });
 
@@ -66,8 +73,8 @@ suite('APPLICATION API', function (){
     });
   });
   test('log in as user3 - unapproved', function(done){
-    user1.post(port+'/api/login').send({email:'3@3.com',password:'3'}).end(function(res){
-        assert.equal(res.status,200);
+    user1.post(port+'/api/login').send({email:'3@3.com', password:'3'}).end(function(res){
+        assert.equal(res.status, 200);
       done();
     });
   });
