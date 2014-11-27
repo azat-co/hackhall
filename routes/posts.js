@@ -1,9 +1,4 @@
 objectId = require('mongodb').ObjectID;
-var red, blue, reset;
-red = '\u001b[31m';
-blue = '\u001b[34m';
-reset = '\u001b[0m';
-console.log(red + 'This is red' + reset + ' while ' + blue + ' this is blue' + reset);
 
 var LIMIT = 10;
 var SKIP = 0;

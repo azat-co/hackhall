@@ -6,6 +6,7 @@ var express = require('express'),
   oauth = require('oauth'),
   querystring = require('querystring');
 
+
 var favicon = require('serve-favicon'),
   logger = require('morgan'),
   bodyParser = require('body-parser'),
@@ -16,6 +17,8 @@ var favicon = require('serve-favicon'),
   // errorHandler = require('errorhandler');
 
 var hs = require(path.join(__dirname, 'lib', 'hackhall-sendgrid'));
+var c = require(path.join(__dirname, 'lib', 'colors'));
+require(path.join(__dirname, 'lib', 'env-vars'));
 
 var GitHubStrategy = require('passport-github').Strategy,
   passport = require('passport');
@@ -76,7 +79,7 @@ var mongoose = require('mongoose');
 var connection = mongoose.createConnection(dbUrl);
 connection.on('error', console.error.bind(console, 'connection error:'));
 connection.once('open', function () {
-  console.info('connected to database')
+  console.info('Connected to database')
 });
 
 var models = require('./models');
@@ -221,11 +224,11 @@ app.use(errorHandler);
 http.createServer(app);
 if (require.main === module) {
   app.listen(app.get('port'), function(){
-    console.info('Express server listening on port ' + app.get('port'));
+    console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
   });
 }
 else {
-  console.info('Running app as a module')
+  console.info(c.blue + 'Running app as a module' + c.reset)
   exports.app = app;
 }
 

@@ -55,7 +55,6 @@ suite('APPLICATION API', function (){
     user1.post(port+'/api/application').send(user3).end(function(res){
       assert.equal(res.status,200);
       userId = res.body._id;
-      console.log('***', userId, res.body)
       done();
     });
 

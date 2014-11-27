@@ -3,9 +3,9 @@ MOCHA_OPTS = --ui tdd
 
 test:
 	clear
-	echo Seeding *********************************************************
+	echo Seeding **********************
 	node seed.js
-	echo Starting test *********************************************************
+	echo Starting test **********************
 	foreman run ./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \
@@ -22,7 +22,7 @@ test-w:
 
 users:
 	clear
-	echo Starting test *********************************************************
+	echo Starting test **********************
 	foreman run ./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \
@@ -31,7 +31,7 @@ users:
 
 posts:
 	clear
-	echo Starting test *********************************************************
+	echo Starting test **********************
 	foreman run ./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \
@@ -40,11 +40,11 @@ posts:
 
 application:
 	clear
-	echo Starting test *********************************************************
+	echo Starting test **********************
 	foreman run ./node_modules/mocha/bin/mocha \
 	--reporter $(REPORTER) \
 	$(MOCHA_OPTS) \
 	tests/application.js
 	echo Ending test
 
-.PHONY: test test-w posts application
+.PHONY: test test-w users posts application

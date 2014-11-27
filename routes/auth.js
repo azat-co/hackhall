@@ -18,35 +18,35 @@ exports.angelListCallback = function(req, res, next) {
   var data;
   // console.log('/api/oauth/token?client_id=' + angelListClientId + '&client_secret=' + angelListClientSecret + '&code=' + req.query.code + '&grant_type=authorization_code');
   var angelReq = https.request({
-      host: 'angel.co',
-      path: '/api/oauth/token?client_id=' + angelListClientId + '&client_secret=' + angelListClientSecret + '&code=' + req.query.code + '&grant_type=authorization_code',
-      port: 443,
-      method: 'POST',
-      headers: {
-        'content-length': 0
-      }
-    },
-    function(angelRes) {
-      angelRes.on('data', function(buffer) {
-        buf += buffer;
-      });
-      angelRes.on('end', function() {
-        try {
-          data = JSON.parse(buf.toString('utf-8'));
-        } catch (e) {
-          if (e) return next(e);
-        }
-        if (!data || !data.access_token) return  next(new Error('No data from AngelList'));
-        token = data.access_token;
-        req.session.angelListAccessToken = token;
-        if (token) {
-          next();
-        }
-        else {
-          next(new Error('No token from AngelList'));
-        }
-      });
+    host: 'angel.co',
+    path: '/api/oauth/token?client_id=' + angelListClientId + '&client_secret=' + angelListClientSecret + '&code=' + req.query.code + '&grant_type=authorization_code',
+    port: 443,
+    method: 'POST',
+    headers: {
+      'content-length': 0
+    }
+  },
+  function(angelRes) {
+    angelRes.on('data', function(buffer) {
+      buf += buffer;
     });
+    angelRes.on('end', function() {
+      try {
+        data = JSON.parse(buf.toString('utf-8'));
+      } catch (e) {
+        if (e) return next(e);
+      }
+      if (!data || !data.access_token) return  next(new Error('No data from AngelList'));
+      token = data.access_token;
+      req.session.angelListAccessToken = token;
+      if (token) {
+        next();
+      }
+      else {
+        next(new Error('No token from AngelList'));
+      }
+    });
+  });
   angelReq.end();
   angelReq.on('error', function(e) {
     console.error(e);
