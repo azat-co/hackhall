@@ -37,7 +37,7 @@ exports.getPosts = function(req, res, next) {
       '_id': -1
     }
   }, function(err, docs) {
-    if (!docs) next('There are not posts.');
+    if (!docs) return next('There are not posts.');
     var posts = [];
     docs.forEach(function(doc, i, list) {
       var item = doc.toObject();
@@ -68,7 +68,7 @@ exports.getPosts = function(req, res, next) {
     body.skip = skip;
     body.posts = posts;
     req.db.Post.count({}, function(err, total) {
-      if (err) next(err);
+      if (err) return next(err);
       body.total = total;
       res.status(200).json(body);
     });
@@ -88,7 +88,7 @@ exports.getPost = function(req, res, next) {
       watches: true,
       likes: true
     }, function(err, obj) {
-      if (err) next(err);
+      if (err) return next(err);
       if (!obj) {
         next(new Error('Nothing is found.'));
       } else {
@@ -102,7 +102,7 @@ exports.getPost = function(req, res, next) {
 
 exports.del = function(req, res, next) {
   req.db.Post.findById(req.params.id, function(err, obj) {
-    if (err) next(err);
+    if (err) return next(err);
     if (req.session.admin || req.session.userId === obj.author.id) {
       obj.remove();
       res.status(200).json(obj);
@@ -132,7 +132,7 @@ function watchPost(req, res, next) {
       watches: req.session.userId
     }
   }, {}, function(err, obj) {
-    if (err) next(err);
+    if (err) return next(err);
     else {
       res.status(200).json(obj);
     }
@@ -176,7 +176,7 @@ exports.updatePost = function(req, res, next) {
         doc.text = req.body.text || null;
         doc.url = req.body.url || null;
         doc.save(function(e, d) {
-          if (e) next(e);
+          if (e) return next(e);
           res.status(200).json(d);
         });
       })

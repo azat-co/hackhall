@@ -25,8 +25,7 @@ exports.angelListCallback = function(req, res, next) {
     headers: {
       'content-length': 0
     }
-  },
-  function(angelRes) {
+  }, function(angelRes) {
     angelRes.on('data', function(buffer) {
       buf += buffer;
     });

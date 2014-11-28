@@ -16,19 +16,14 @@ exports.add = function(req, res, next) {
     linkedinUrl: req.body.linkedinUrl,
     githubUrl: req.body.githubUrl
   }, function(err, obj) {
-    if (err) next(err);
-    if (!obj) next('Cannot create.')
+    if (err) return next(err);
+    if (!obj) return next('Cannot create.')
     res.json(200, obj);
   })
 };
 
 exports.update = function(req, res, next) {
-  var data = {};
-  Object.keys(req.body).forEach(function(k) {
-    if (req.body[k]) {
-      data[k] = req.body[k];
-    }
-  });
+  var data = req.body;
   delete data._id;
 
   req.db.User.findByIdAndUpdate(req.session.user._id, {
