@@ -18,11 +18,12 @@ define([
             this.toggleDate = 1;
             this.collection = new UsersCollection;
             this.collection.bind('all', this.render, this);
-            this.$el.html('<img src="/img/loader.gif"/>');
             // this.collection.model.bind('update', function(){console.log('update')}, this);
             // this.collection.model.bind('change', function(){console.log('change')}, this);
         },
         load: function() {
+            this.$el.html(_.template(this.template));
+            this.$el.find('#users-box').append('<img src="/img/loader.gif"/>');
             this.collection.fetch({
                 xhrFeilds: creds,
                 success: function() {},
@@ -34,12 +35,12 @@ define([
             });
         },
         render: function() {
-            this.$el.html(_.template(this.template));
-            var html = '';
+            var usersView = this
+            usersView.$el.find('#users-box').empty()
             _.each(this.collection.models, function(model) {
                 // $('#posts-box').append(new PostView({model:model}).render().$el);
                 // console.log(app.headerView.model.attributes)
-                $('#users-box').append(new UsersSubView({
+                usersView.$el.find('#users-box').append(new UsersSubView({
                     model: model,
                     profile: app.headerView.model.attributes
                 }).render().el);
