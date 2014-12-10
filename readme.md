@@ -48,6 +48,16 @@ NODE_ENV=production
 
 > Built with Backbone.js, Mongoose and Express.js.
 
+## SSL
+
+Files for SSL:
+
+```
+  host.key
+  host.key.pub
+  request.csr
+  server.crt
+```
 
 ## Tests
 
