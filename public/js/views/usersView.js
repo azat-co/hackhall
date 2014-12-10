@@ -89,10 +89,10 @@ define([
                 // return model.get('created')
                 if (this.toggleDate === 0) {
                     this.toggleDate = 1;
-                    return -(new Date(model.attributes.created).getTime())
+                    return -Date.parse(model.attributes.created)
                 } else {
                     this.toggleDate = 0;
-                    return (new Date(model.attributes.created).getTime())
+                    return Date.parse(model.attributes.created)
                 }
 
             }
