@@ -14,7 +14,9 @@ seedUsers = [
     admin: true,
     _id: objectId('503cf4730e9f580200000002'),
     headline: 'Admin of HackHall',
-    approved: true
+    approved: true,
+    created: new Date(),
+    updated: new Date()
   },
   {
     firstName:  'test',
@@ -27,7 +29,9 @@ seedUsers = [
     _id: objectId('503cf4730e9f580200000003'),
     photoUrl: 'https://s3.amazonaws.com/photos.angel.co/users/68026-medium_jpg?1344297998',
     headline: 'Test user 1',
-    approved: true
+    approved: true,
+    created: new Date(),
+    updated: new Date()
   }
 ];
 var hashPassword = function (user, callback) {

@@ -3,7 +3,7 @@ var path = require('path'),
 
 var objectId = require('mongodb').ObjectID;
 
-var safeFields = 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl';
+var safeFields = 'firstName lastName displayName headline photoUrl admin approved banned role angelUrl twitterUrl facebookUrl linkedinUrl githubUrl created updated';
 
 exports.getUsers = function(req, res, next) {
   if (req.session.auth && req.session.userId) {
