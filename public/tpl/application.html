@@ -43,15 +43,16 @@
 			<div class="control-group">
 				<label class="control-label">Membership fee</label>
 				<form action="/subscribe" method="POST">ttt<%= attr.stripePub %>
-				  <script
-				    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-				    data-key="<%= attr.stripePub %>"
-				    data-amount="299"
-				    data-name="Membership"
-				    data-description="Membership fee is $2.99 per month to cover hosting and maintenance expenses."
-				    data-image="/img/webapplog-logo.png"
-				    data-email="<%= attr.email %>">
-				  </script>
+				 <%= '<script \
+				    src="https://checkout.stripe.com/checkout.js0" class="stripe-button" \
+				    type="text/javascript"\
+				    data-key="' + attr.stripePub +
+				    '" data-amount="299" \
+				    data-name="Membership" \
+				    data-description="Membership fee is $2.99 per month to cover hosting and maintenance expenses." \
+				    data-image="/img/webapplog-logo.png" \
+				    data-email=" '+  attr.email +'"> \
+				  </script>' %>
 				</form>
 				</div>
 			</div>
@@ -64,6 +65,8 @@
 			</div>
 		</div>
 	</div>
+
+
 	<!-- <div class="control-group">
 		<label class="control-label">Your Role</label>
 		<div class="controls">

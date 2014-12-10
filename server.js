@@ -4,8 +4,9 @@ var express = require('express'),
   util = require('util'),
   path = require('path'),
   oauth = require('oauth'),
+  fs = require('fs'),
+  https = require('https'),
   querystring = require('querystring');
-
 
 var favicon = require('serve-favicon'),
   logger = require('morgan'),
@@ -122,7 +123,7 @@ if (process.env.NODE_ENV ==='production') {
   var gitHubOptions = {
     clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
     clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+    callbackURL: "https://127.0.0.1:3000/auth/github/callback"
   };
   app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
   app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
@@ -178,7 +179,7 @@ app.get('/auth/github',
   });
 
 app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/#login' }),
   function(req, res) {
     if (req.isAuthenticated()) {
       req.session.auth = true;
@@ -231,10 +232,19 @@ app.use(clientErrorHandler);
 app.use(errorHandler);
 
 
-http.createServer(app);
+
+var ops = {
+    key: fs.readFileSync('host.key'),
+    cert: fs.readFileSync('server.crt') ,
+    passphrase: ''
+};
+console.log (ops)
 if (require.main === module) {
-  app.listen(app.get('port'), function(){
-    console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
+  // http.createServer(app).listen(app.get('port'), function(){
+    // console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
+  // });
+  https.createServer(ops, app).listen(app.get('port'), function(){
+    console.info('HTTPS is running!')
   });
 }
 else {
