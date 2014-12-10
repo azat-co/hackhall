@@ -1,6 +1,6 @@
 requirejs.config({
-	// urlArgs: "bust=" +  (new Date()).getTime() 
-	//REMOVE in PROD	
+	// urlArgs: "bust=" +  (new Date()).getTime()
+	//REMOVE in PROD
     //By default load any module IDs from js/lib
     // baseUrl: 'js/lib',
     //except, if the module ID starts with "app",
@@ -18,22 +18,22 @@ requirejs.config({
 var creds ={
 	withCredentials: true
 };
-// 
+//
 // var opt = {
 // 	xhrFields: {
 // 		withCredentials: true
 // 	},
-// 	error: function (){		
+// 	error: function (){
 // 		app.navigate("#login", true);
 // 	}
 // };
 require([
-	'libs/text!tpl/home.html', 
-	'libs/text!tpl/signup.html', 
-	'libs/text!tpl/thankyou.html', 
-	'libs/text!tpl/login.html', 
-	'libs/text!tpl/profile.html', 
-	
+	'libs/text!tpl/home.html',
+	'libs/text!tpl/signup.html',
+	'libs/text!tpl/thankyou.html',
+	'libs/text!tpl/login.html',
+	'libs/text!tpl/profile.html',
+
 	'js/views/headerView',
 	'js/views/alertsView',
 	'js/views/footerView',
@@ -45,16 +45,16 @@ require([
 	'js/views/usersView',
 	'js/views/userView',
 	'js/views/applicationView',
-	
+
 	'js/models/post-model'
-], 
+],
 	function (
-		homeTpl, 
-		signupTpl, 
+		homeTpl,
+		signupTpl,
 		thankyouTpl,
-		loginTpl, 
-		profileTpl, 
-		
+		loginTpl,
+		profileTpl,
+
 		HeaderView,
 		AlertsView,
 		FooterView,
@@ -66,9 +66,9 @@ require([
 		UsersView,
 		UserView,
 		ApplicationView,
-		
+
 		PostModel
-		
+
 	) {
 	var ApplicationRouter = Backbone.Router.extend({
 		routes: {
@@ -89,7 +89,7 @@ require([
 			"*actions": "login"
 		},
 		initialize: function() {
-			this.headerView = new HeaderView();		
+			this.headerView = new HeaderView();
 			this.headerView.render();
 			this.alertsView = new AlertsView();
 			this.footerView = new FooterView();
@@ -102,11 +102,11 @@ require([
 			this.postView = new PostView();
 			this.usersView = new UsersView();
 			this.userView = new UserView();
-			this.postAddView = new PostAddView();	
-			this.applicationView = new ApplicationView();		
+			this.postAddView = new PostAddView();
+			this.applicationView = new ApplicationView();
 			this.bind('all', this.menu, this);
 		},
-		home: function() {			
+		home: function() {
 			this.homeView = new HomeView();
 			this.homeView.render();
 		},
@@ -137,9 +137,9 @@ require([
 		},
 		people: function() {
 			this.usersView.load();
-		},		
+		},
 		viewUser: function(id) {
-			this.userView.load(id);			
+			this.userView.load(id);
 		},
 		application: function(){
 			this.applicationView.get();
@@ -149,17 +149,17 @@ require([
 			"",
 			function(data, status, xhr){
 				if (data.msg=="Logged out") {
-					app.headerView.model.clear();		
+					app.headerView.model.clear();
 					app.profileView.model.clear();
 					app.navigate('#home', true);
 				}
 			}, "json");
-			
+
 		},
 		menu: function() {
 			// console.log('!')
 			//navigation thru menu by clicking
-			if (this.headerView.pageName!='' && this.headerView.pageName!=Backbone.history.fragment) { 
+			if (this.headerView.pageName!='' && this.headerView.pageName!=Backbone.history.fragment) {
 				this.headerView.pageName=Backbone.history.fragment;
 				this.headerView.menu();
 
@@ -180,7 +180,7 @@ require([
 			// console.log(nav)
 			// console.log(nav.find('a[href="#'+Backbone.history.fragment+'"]'))
 			// console.log('a[href="#'+Backbone.history.fragment+'"]');
-		}						
+		}
 	});
 
 	HomeView = Backbone.View.extend({
@@ -233,7 +233,7 @@ require([
 					console.log(error);
 					console.log(xhr);
 					app.alertsView.collection.add ({text: JSON.parse(xhr.responseText).error, status: status, error:error});
-					
+
 				}
 			})
 		},
@@ -244,9 +244,9 @@ require([
 		            $(this).blur();
 		            $('#login').focus().click();
 			    }
-			});			
+			});
 		}
-	});		
+	});
 	ProfileView = Backbone.View.extend({
 		el: "#content",
 		template: profileTpl,
@@ -254,7 +254,7 @@ require([
 			'click #delete': 'destroy'
 		},
 		initialize: function() {
-			this.model = new ProfileModel;			
+			this.model = new ProfileModel;
 			this.model.bind('change', this.render, this);
 		},
 		destroy: function() {
@@ -264,17 +264,17 @@ require([
 			this.model.destroy({
 				success: function() {
 					// app.profileView.render();
-					app.alertsView.success("Deleted!");					
+					app.alertsView.success("Deleted!");
 					$('body').removeClass('modal-open');
-					$('.modal-backdrop').remove();						
+					$('.modal-backdrop').remove();
 					app.navigate("#login",true);
 				},
 				error: function(response) {
 					// console.log('error!');
 					// app.navigate('#login',true);
-					app.alertsView.error (response);					
-				}				
-			});			
+					app.alertsView.error (response);
+				}
+			});
 		},
 		load: function(id) {
 			this.model.fetch({
@@ -282,30 +282,30 @@ require([
 			      withCredentials: true
 			   },
 				success: function() {
-					console.log('s');	
-					app.profileView.render();	
+					console.log('s');
+					app.profileView.render();
 				},
 				error: function() {
 					console.log('error!');
 					app.navigate('#login',true);
-					app.alertsView.error (response);					
+					app.alertsView.error (response);
 				}
 			// 401: function (){
 			// 	app.navigate("#login", true);
-			// }		
+			// }
 			});
 		},
 		render: function() {
-			// console.log(this.model.attributes.posts)				
+			// console.log(this.model.attributes.posts)
 			if (this.model.attributes.posts){
 				this.model.attributes.own = true;
 				this.$el.html(_.template(this.template, {attr:this.model.attributes, profile:this.model.attributes}));
-			}			
+			}
 		}
-	});	
+	});
 
 	ProfileModel = Backbone.Model.extend({
-		url: "/api/profile"		
+		url: "/api/profile"
 	});
 	UserModel = Backbone.Model.extend({
 		url: "/api/users/",
@@ -315,18 +315,19 @@ require([
 			if (id) {
 				this.id= id;
 				this.url=this.url+this.id;
-				// console.log(this.url)				
+				// console.log(this.url)
 			}
-		}	
+		}
 	});
 	UsersCollection = Backbone.Collection.extend({
-		url: "/api/users",
-		comparator: function(m) {
-			var temp = new Date(m.get('created')).toLocaleDateString();			
-        	m.set('created',temp);        	
-    	}		
-	});	
-	HeaderModel = Backbone.Model.extend({		
+		url: "/api/users"
+		// ,
+		// comparator: function(m) {
+			// var temp = new Date(m.get('created')).toLocaleDateString();
+        	// m.set('created',temp);
+    	// }
+	});
+	HeaderModel = Backbone.Model.extend({
 
 	});
 	ApplicationModel = Backbone.Model.extend({
@@ -358,7 +359,7 @@ require([
 	});
 
 	app = new ApplicationRouter();
-	Backbone.history.start();	
+	Backbone.history.start();
 });
 
 

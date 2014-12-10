@@ -37,7 +37,7 @@ define([
         render: function() {
             var usersView = this
             usersView.$el.find('#users-box').empty()
-            _.each(this.collection.models, function(model) {
+            this.collection.each(function(model) {
                 // $('#posts-box').append(new PostView({model:model}).render().$el);
                 // console.log(app.headerView.model.attributes)
                 usersView.$el.find('#users-box').append(new UsersSubView({
