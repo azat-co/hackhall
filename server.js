@@ -116,15 +116,25 @@ if (process.env.NODE_ENV ==='production') {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://hackhall.com/auth/github/callback'
   };
+  app.set('stripePub', process.env.STRIPE_PUB);
+  app.set('stripeSecret', process.env.STRIPE_SECRET);
 } else {
   var gitHubOptions = {
     clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
     clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   };
+  app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
+  app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 }
 
-
+app.use(function(req, res, next){
+  req.conf = {
+    stripeSecret: app.get('stripeSecret'),
+    stripePub: app.get('stripePub')
+  }
+  return next()
+})
 passport.use(new GitHubStrategy(gitHubOptions,
   function(accessToken, refreshToken, profile, done) {
     // console.log(profile)

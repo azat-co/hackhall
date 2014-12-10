@@ -37,9 +37,11 @@ exports.update = function(req, res, next) {
 
 exports.get = function(req, res, next) {
   req.db.User.findById(req.session.user._id,
-    'firstName lastName photoUrl headline displayName angelUrl facebookUrl twitterUrl linkedinUrl githubUrl', {}, function(err, obj) {
+    'firstName lastName photoUrl headline displayName angelUrl facebookUrl twitterUrl linkedinUrl githubUrl', {}, function(err, user) {
       if (err) next(err);
-      if (!obj) next('cannot find');
+      if (!user) next('cannot find');
+      var obj = user.toObject();
+      obj.stripePub = req.conf.stripePub;
       res.status(200).json(obj);
     })
 };

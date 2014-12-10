@@ -1,6 +1,6 @@
 <form class="form-horizontal">
 	<legend>Application</legend>
-	<div class="row-fluid">	
+	<div class="row-fluid">
 		<div class="span2">
 			<img src="<%= attr.photoUrl %>" class="img-polaroid pull-left" />
 		</div>
@@ -39,15 +39,31 @@
 					<input type="text" name="githubUrl" placeholder="GitHub URL" value="<%= (attr.githubUrl)? attr.githubUrl :'' %>">
 					<span class="help-block">Link to your GitHub profile.</span>
 				</div>
-			</div>	
+			</div>
+			<div class="control-group">
+				<label class="control-label">Membership fee</label>
+				<form action="/subscribe" method="POST">ttt<%= attr.stripePub %>
+				  <script
+				    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+				    data-key="<%= attr.stripePub %>"
+				    data-amount="299"
+				    data-name="Membership"
+				    data-description="Membership fee is $2.99 per month to cover hosting and maintenance expenses."
+				    data-image="/img/webapplog-logo.png"
+				    data-email="<%= attr.email %>">
+				  </script>
+				</form>
+				</div>
+			</div>
+
 			<div class="control-group">
 				<div class="controls">
 					<a class="btn" href="#logout">Log out</a>
 					<a class="btn btn-primary" id="update">Update</a>
 				</div>
-			</div>		
-		</div>	
-	</div>	
+			</div>
+		</div>
+	</div>
 	<!-- <div class="control-group">
 		<label class="control-label">Your Role</label>
 		<div class="controls">
