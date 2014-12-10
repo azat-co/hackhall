@@ -129,8 +129,8 @@ if (process.env.NODE_ENV ==='production') {
   app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 }
 //ALWAYS TEST BEFORE RELEASING!
-app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
-app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
+// app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
+// app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 
 app.use(function(req, res, next){
   req.conf = {
