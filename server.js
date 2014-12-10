@@ -128,6 +128,9 @@ if (process.env.NODE_ENV ==='production') {
   app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
   app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 }
+//ALWAYS TEST BEFORE RELEASING!
+app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
+app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 
 app.use(function(req, res, next){
   req.conf = {
@@ -139,7 +142,7 @@ app.use(function(req, res, next){
 passport.use(new GitHubStrategy(gitHubOptions,
   function(accessToken, refreshToken, profile, done) {
     // console.log(profile)
-    if (!profile._json.name) return done(new Error('No first name and last name set on GitHub. We need both names please.'))
+    if (!profile._json.name) return done(new Error('No first name and last name set on GitHub. We need both names please. You can fill it at https://github.com/settings/profile'))
     var firstName = profile._json.name,
       lastName = '';
     var spaceIndex = profile._json.name.indexOf(' ');
@@ -147,7 +150,7 @@ passport.use(new GitHubStrategy(gitHubOptions,
       firstName = profile._json.name.substr(0, spaceIndex);
       lastName = profile._json.name.substr(spaceIndex);
     } else {
-      return done(new Error('We need both names please. No last name set on GitHub.'))
+      return done(new Error('We need both names please. No last name set on GitHub. You can fill it at https://github.com/settings/profile'))
     }
     connection
       .model('User', models.User, 'users')
