@@ -30,7 +30,7 @@ seedUsers = [
     photoUrl: 'https://s3.amazonaws.com/photos.angel.co/users/68026-medium_jpg?1344297998',
     headline: 'Test user 1',
     approved: true,
-    created: new Date(),
+    created: new Date('2012-12-10T04:16:19.677Z'),
     updated: new Date()
   }
 ];
