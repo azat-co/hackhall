@@ -27,13 +27,13 @@
 	</div>
 	<div class="">
 		<div class="user-name">
-			<a href="/#people/<%= model.attributes._id %>" title="<%= model.attributes.displayName %>" > <%= model.attributes.displayName %></a>
-
+			<a href="/#people/<%= model.attributes._id %>" title="<%= model.attributes.displayName %>" > <%= model.attributes.displayName %></a>		
 			<%= (model.attributes.role=='admin' || model.attributes.admin)? '<span class="label label-important">admin</span>' : '' %>
 			<!-- <%= (model.attributes.role=='user')? '<span class="label label-info">user</span>' : '' %>		 -->
 			<!-- <%= (!model.attributes.role)? '<span class="label label-info">user</span>' : '' %>					 -->
 			<span class="label label-info"><%= model.attributes.role %></span>
-
+			<br/>
+			<a>Joined: <span><%= model.attributes.created %></span></a>					
 			<% if (model.profile.admin) {%>
 		</div>
 			<div class="btn-group">
