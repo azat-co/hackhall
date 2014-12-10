@@ -5,21 +5,17 @@ define([
     return UsersView = Backbone.View.extend({
         el: "#content",
         events: {
-
             'click #alaphabetic-sort ': 'sortAlphabetically',
             'click #date-sort ': 'sortByDate'
-
         },
 
         template: usersTpl,
 
         initialize: function() {
-            this.sortCount = 1;
-            this.toggleDate = 1;
+            this.sortCount = 0;
+            this.toggleDate = 0;
             this.collection = new UsersCollection;
             this.collection.bind('all', this.render, this);
-            // this.collection.model.bind('update', function(){console.log('update')}, this);
-            // this.collection.model.bind('change', function(){console.log('change')}, this);
         },
         load: function() {
             this.$el.html(_.template(this.template));
@@ -28,8 +24,6 @@ define([
                 xhrFeilds: creds,
                 success: function() {},
                 error: function(xhr, status, error) {
-                    // console.log({text: JSON.parse(xhr.responseText).error, status: status, error:error});
-                    // app.alertsView.collection.add ({text: JSON.parse(xhr.responseText).error, status: status, error:error});
                     app.navigate("#login", true);
                 }
             });
@@ -38,8 +32,6 @@ define([
             var usersView = this
             usersView.$el.find('#users-box').empty()
             this.collection.each(function(model) {
-                // $('#posts-box').append(new PostView({model:model}).render().$el);
-                // console.log(app.headerView.model.attributes)
                 usersView.$el.find('#users-box').append(new UsersSubView({
                     model: model,
                     profile: app.headerView.model.attributes
@@ -48,29 +40,20 @@ define([
         },
 
         sortAlphabetically: function() {
-            if (this.sortCount === 1 || this.sortCount =='undefined') {
-                this.$el.html(_.template(this.template));
-                var html = '';
+            this.sortCount = this.sortCount || 0
+            if (this.sortCount === 0) {
                 this.collection.comparator = function( model ) {
-                  return model.get( 'firstName' );
+                    return model.get('firstName');
                 }
-                this.collection.sort();
-                this.render();
-                this.sortCount = 0;
-            } else {
-                this.$el.html(_.template(this.template));
-                var html = '';
-                _.each(this.collection.models, function(model) {
-                    // $('#posts-box').append(new PostView({model:model}).render().$el);
-                    // console.log(app.headerView.model.attributes)
-                    $('#users-box').append(new UsersSubView({
-                        model: model,
-                        profile: app.headerView.model.attributes
-                    }).render().el);
-                });
-
                 this.sortCount = 1;
+                this.toggleDate = 0;
+                this.collection.sort();
+            } else {
+                this.collection.models.reverse();
+                this.sortCount = 0;
             }
+
+            this.render();
 
         },
 
@@ -78,6 +61,7 @@ define([
             this.toggleDate = this.toggleDate || 0
             if (this.toggleDate === 0) {
                 this.toggleDate = 1;
+                this.sortCount = 0;
                 this.collection.comparator = function(model){
                     return (new Date(model.get('created'))).getTime()
                 }
