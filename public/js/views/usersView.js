@@ -83,14 +83,22 @@ define([
             // this.toggleDate = 1;
 
             // }else {
+            this.toggleDate = this.toggleDate || 0
             this.collection.comparator = function(model){
                 // return model.get('created')
-                return new Date(model.attributes.created).toLocaleDateString()
+                if (this.toggleDate === 0) {
+                    this.toggleDate = 1;
+                    return -(new Date(model.attributes.created).getTime())
+                } else {
+                    this.toggleDate = 0;
+                    return (new Date(model.attributes.created).getTime())
+                }
+
             }
             this.collection.sort()
             this.render()
             // sorted = _.sortBy(this.collection.models,"created");
-            this.toggleDate = 0;
+
 
             // }
 
