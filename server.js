@@ -139,13 +139,15 @@ app.use(function(req, res, next){
 passport.use(new GitHubStrategy(gitHubOptions,
   function(accessToken, refreshToken, profile, done) {
     // console.log(profile)
-    if (!profile.name) return done(new Error('No first name and last name set'))
+    if (!profile._json.name) return done(new Error('No first name and last name set on GitHub. We need both names please.'))
     var firstName = profile._json.name,
       lastName = '';
     var spaceIndex = profile._json.name.indexOf(' ');
     if (spaceIndex>-1) {
       firstName = profile._json.name.substr(0, spaceIndex);
       lastName = profile._json.name.substr(spaceIndex);
+    } else {
+      return done(new Error('We need both names please. No last name set on GitHub.'))
     }
     connection
       .model('User', models.User, 'users')
