@@ -75,44 +75,20 @@ define([
         },
 
         sortByDate: function() {
-
-            // if (this.toggleDate === 0 || this.toggleDate == 'undefined') {
-
-            // sorted = _.sortBy(this.collection.models, function (model) {
-            //                 return new Date(model.attributes.created).toLocaleDateString();
-            //             });
-            // this.toggleDate = 1;
-
-            // }else {
             this.toggleDate = this.toggleDate || 0
-            this.collection.comparator = function(model){
-                // return model.get('created')
-                if (this.toggleDate === 0) {
-                    this.toggleDate = 1;
-                    return -(new Date(model.get('created'))).getTime()
-                    // return -Date.parse(model.get('created'))
-                } else {
-                    this.toggleDate = 0;
+            if (this.toggleDate === 0) {
+                this.toggleDate = 1;
+                this.collection.comparator = function(model){
                     return (new Date(model.get('created'))).getTime()
-                    // return Date.parse(model.get('created'))
                 }
-
+            } else {
+                this.toggleDate = 0;
+                this.collection.comparator = function(model){
+                    return -(new Date(model.get('created'))).getTime()
+                }
             }
             this.collection.sort()
             this.render()
-            // sorted = _.sortBy(this.collection.models,"created");
-
-
-            // }
-
-            // _.each(sorted, function(model) {
-                // $('#users-box').append(new UsersSubView({
-                    // model: model,
-                    // profile: app.headerView.model.attributes
-                // }).render().el);
-            // });
-
-
         }
 
     });
