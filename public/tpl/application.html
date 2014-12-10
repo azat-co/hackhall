@@ -13,6 +13,26 @@
 				</div>
 			</div>
 			<div class="control-group">
+				<label class="control-label">Membership fee</label>
+				<div class="controls">
+					<% if (attr.isStripeToken) { %>
+						<i class="icon-ok"></i><span> Credit/debit card is on file.</span>
+					<%	} else { %>
+						<a class="stripe-button btn btn-primary">Authorize CC with Stripe</a>
+					<% } %>
+					<div><small>You won't be charged unless your membership is approved. After membership approval your card will be charged $2.99 each month to help us pay for hosting and maintenance.</small></div>
+
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Email</label>
+				<div class="controls">
+					<span><%= attr.email %></span>
+					<small>The email is set on GitHub/AngelList if you used them</small>
+				</div>
+
+			</div>
+			<div class="control-group">
 				<label class="control-label">Facebook URL</label>
 				<div class="controls">
 					<input type="text" name="facebookUrl" placeholder="Facebook URL" value="<%= (attr.facebookUrl) ? attr.facebookUrl : ''%>">
@@ -40,27 +60,12 @@
 					<span class="help-block">Link to your GitHub profile.</span>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label">Membership fee</label>
-				<form action="/subscribe" method="POST">ttt<%= attr.stripePub %>
-				 <%= '<script \
-				    src="https://checkout.stripe.com/checkout.js0" class="stripe-button" \
-				    type="text/javascript"\
-				    data-key="' + attr.stripePub +
-				    '" data-amount="299" \
-				    data-name="Membership" \
-				    data-description="Membership fee is $2.99 per month to cover hosting and maintenance expenses." \
-				    data-image="/img/webapplog-logo.png" \
-				    data-email=" '+  attr.email +'"> \
-				  </script>' %>
-				</form>
-				</div>
-			</div>
+
 
 			<div class="control-group">
 				<div class="controls">
 					<a class="btn" href="#logout">Log out</a>
-					<a class="btn btn-primary" id="update">Update</a>
+					<a class="btn" id="update">Update</a>
 				</div>
 			</div>
 		</div>

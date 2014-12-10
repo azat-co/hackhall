@@ -37,11 +37,13 @@ exports.update = function(req, res, next) {
 
 exports.get = function(req, res, next) {
   req.db.User.findById(req.session.user._id,
-    'firstName lastName photoUrl headline displayName angelUrl facebookUrl twitterUrl linkedinUrl githubUrl', {}, function(err, user) {
+    'firstName lastName photoUrl headline displayName angelUrl facebookUrl twitterUrl linkedinUrl githubUrl email isStripeToken stripeToken', {}, function(err, user) {
       if (err) next(err);
       if (!user) next('cannot find');
       var obj = user.toObject();
       obj.stripePub = req.conf.stripePub;
+      obj.isStripeToken = (obj.stripeToken!=null)
+      delete obj.stripeToken //remove sensetive data
       res.status(200).json(obj);
     })
 };

@@ -123,7 +123,7 @@ if (process.env.NODE_ENV ==='production') {
   var gitHubOptions = {
     clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
     clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
-    callbackURL: "https://127.0.0.1:3000/auth/github/callback"
+    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   };
   app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
   app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
@@ -233,19 +233,19 @@ app.use(errorHandler);
 
 
 
-var ops = {
-    key: fs.readFileSync('host.key'),
-    cert: fs.readFileSync('server.crt') ,
-    passphrase: ''
-};
-console.log (ops)
+// var ops = {
+    // key: fs.readFileSync('host.key'),
+    // cert: fs.readFileSync('server.crt') ,
+    // passphrase: ''
+// };
+// console.log (ops)
 if (require.main === module) {
-  // http.createServer(app).listen(app.get('port'), function(){
-    // console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
-  // });
-  https.createServer(ops, app).listen(app.get('port'), function(){
-    console.info('HTTPS is running!')
+  http.createServer(app).listen(app.get('port'), function(){
+    console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
   });
+  // https.createServer(ops, app).listen(app.get('port'), function(){
+    // console.info('HTTPS is running!')
+  // });
 }
 else {
   console.info(c.blue + 'Running app as a module' + c.reset)
