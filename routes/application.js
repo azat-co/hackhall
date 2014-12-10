@@ -1,3 +1,5 @@
+var hs = require('../lib/hackhall-sendgrid');
+
 exports.add = function(req, res, next) {
   req.db.User.create({
     firstName: req.body.firstName,
@@ -25,7 +27,9 @@ exports.add = function(req, res, next) {
 exports.update = function(req, res, next) {
   var data = req.body;
   delete data._id;
-
+  if (req.body.stripeToken) {
+    hs.notifyCc(req.session.user);
+  }
   req.db.User.findByIdAndUpdate(req.session.user._id, {
     $set: data
   }, function(err, obj) {
