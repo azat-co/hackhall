@@ -18,6 +18,7 @@ define([
             this.toggleDate = 1;
             this.collection = new UsersCollection;
             this.collection.bind('all', this.render, this);
+            this.$el.html('<img src="/img/loader.gif"/>');
             // this.collection.model.bind('update', function(){console.log('update')}, this);
             // this.collection.model.bind('change', function(){console.log('change')}, this);
         },
@@ -82,7 +83,10 @@ define([
             // this.toggleDate = 1;
 
             // }else {
-            this.collection.comparator = function(model){ return model.get('created')}
+            this.collection.comparator = function(model){
+                // return model.get('created')
+                return new Date(model.attributes.created).toLocaleDateString()
+            }
             this.collection.sort()
             this.render()
             // sorted = _.sortBy(this.collection.models,"created");
