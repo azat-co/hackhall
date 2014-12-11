@@ -137,9 +137,9 @@ var User = new Schema({
     likes: [Schema.Types.Mixed],
     watches: [Schema.Types.Mixed],
     comments: [Schema.Types.Mixed]
-  }
+  },
+  stripeToken: Schema.Types.Mixed
 });
-
 
 User.plugin(findOrCreate);
 

@@ -4,8 +4,9 @@ var express = require('express'),
   util = require('util'),
   path = require('path'),
   oauth = require('oauth'),
+  fs = require('fs'),
+  https = require('https'),
   querystring = require('querystring');
-
 
 var favicon = require('serve-favicon'),
   logger = require('morgan'),
@@ -116,24 +117,40 @@ if (process.env.NODE_ENV ==='production') {
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://hackhall.com/auth/github/callback'
   };
+  app.set('stripePub', process.env.STRIPE_PUB);
+  app.set('stripeSecret', process.env.STRIPE_SECRET);
 } else {
   var gitHubOptions = {
     clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
     clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
     callbackURL: "http://127.0.0.1:3000/auth/github/callback"
   };
+  app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
+  app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 }
+//ALWAYS TEST BEFORE RELEASING!
+// app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
+// app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
 
-
+app.use(function(req, res, next){
+  req.conf = {
+    stripeSecret: app.get('stripeSecret'),
+    stripePub: app.get('stripePub')
+  }
+  return next()
+})
 passport.use(new GitHubStrategy(gitHubOptions,
   function(accessToken, refreshToken, profile, done) {
     // console.log(profile)
+    if (!profile._json.name) return done(new Error('No first name and last name set on GitHub. We need both names please. You can fill it at https://github.com/settings/profile'))
     var firstName = profile._json.name,
       lastName = '';
     var spaceIndex = profile._json.name.indexOf(' ');
     if (spaceIndex>-1) {
       firstName = profile._json.name.substr(0, spaceIndex);
       lastName = profile._json.name.substr(spaceIndex);
+    } else {
+      return done(new Error('We need both names please. No last name set on GitHub. You can fill it at https://github.com/settings/profile'))
     }
     connection
       .model('User', models.User, 'users')
@@ -168,7 +185,7 @@ app.get('/auth/github',
   });
 
 app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/#login' }),
   function(req, res) {
     if (req.isAuthenticated()) {
       req.session.auth = true;
@@ -221,11 +238,20 @@ app.use(clientErrorHandler);
 app.use(errorHandler);
 
 
-http.createServer(app);
+
+// var ops = {
+    // key: fs.readFileSync('host.key'),
+    // cert: fs.readFileSync('server.crt') ,
+    // passphrase: ''
+// };
+// console.log (ops)
 if (require.main === module) {
-  app.listen(app.get('port'), function(){
+  http.createServer(app).listen(app.get('port'), function(){
     console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
   });
+  // https.createServer(ops, app).listen(app.get('port'), function(){
+    // console.info('HTTPS is running!')
+  // });
 }
 else {
   console.info(c.blue + 'Running app as a module' + c.reset)

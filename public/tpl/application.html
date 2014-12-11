@@ -1,6 +1,6 @@
 <form class="form-horizontal">
 	<legend>Application</legend>
-	<div class="row-fluid">	
+	<div class="row-fluid">
 		<div class="span2">
 			<img src="<%= attr.photoUrl %>" class="img-polaroid pull-left" />
 		</div>
@@ -11,6 +11,26 @@
 					<input type="text" name="displayName" value="<%= attr.displayName %>" placeholder="Display Name">
 					<span class="help-block">Keep it real.</span>
 				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Membership fee</label>
+				<div class="controls">
+					<% if (attr.isStripeToken) { %>
+						<i class="icon-ok"></i><span> Credit/debit card is on file.</span>
+					<%	} else { %>
+						<a class="stripe-button btn btn-primary">Authorize CC with Stripe</a>
+					<% } %>
+					<div><small>You won't be charged unless your membership is approved. After membership approval your card will be charged $2.99 each month to help us pay for hosting and maintenance.</small></div>
+
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Email</label>
+				<div class="controls">
+					<span><%= attr.email %></span>
+					<small>The email is set on GitHub/AngelList if you used them</small>
+				</div>
+
 			</div>
 			<div class="control-group">
 				<label class="control-label">Facebook URL</label>
@@ -39,15 +59,19 @@
 					<input type="text" name="githubUrl" placeholder="GitHub URL" value="<%= (attr.githubUrl)? attr.githubUrl :'' %>">
 					<span class="help-block">Link to your GitHub profile.</span>
 				</div>
-			</div>	
+			</div>
+
+
 			<div class="control-group">
 				<div class="controls">
 					<a class="btn" href="#logout">Log out</a>
-					<a class="btn btn-primary" id="update">Update</a>
+					<a class="btn" id="update">Update</a>
 				</div>
-			</div>		
-		</div>	
-	</div>	
+			</div>
+		</div>
+	</div>
+
+
 	<!-- <div class="control-group">
 		<label class="control-label">Your Role</label>
 		<div class="controls">

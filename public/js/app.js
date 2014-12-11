@@ -72,7 +72,7 @@ require([
 	) {
 	var ApplicationRouter = Backbone.Router.extend({
 		routes: {
-			"": "login",
+			"": "home",
 			"about": "about",
 			"apply": "signup",
 			"login": "login",
