@@ -24,7 +24,7 @@ define([
 			      withCredentials: true
 			   },
 			success: function() {
-				app.alertsView.success("You application has been submitted! Wait for approval email. You may comeback and update it at any time.");
+				app.alertsView.success("Information is saved, but in order to approve your application you need to agree to a membership fee and put your credit/debit card on file. If you did it, then your application has been submitted! Wait for approval email. You may comeback and update it at any time. ");
 				console.log('s');
 
 			},
