@@ -12,9 +12,10 @@
             <!-- <li class="active"><a href="#">Home</a></li> -->
             <!-- <li><a href="#about">About</a></li> -->
 	<% if (attr._id){ %>
-            <li><a href="#posts">Posts</a></li>	
+            <li><a href="#posts">Posts</a></li>
             <!-- <li><a href="#events">Events</a></li> -->
-            <li><a href="#people">People</a></li>	
+            <li><a href="#people">People</a></li>
+            <li><a href="#chat">Chat</a></li>
             <!-- <li><a href="#companies">Companies</a></li>			 -->
             <!-- <li><a href="#jobs">Jobs</a></li>			 -->
             <!-- <li><a href="#tools">Tools</a></li>	 -->
@@ -35,11 +36,11 @@
           <ul class="nav pull-right">
 	<% if (attr._id) {%>
             <li><a href="#profile" title="Profile">Hi, <%= attr.firstName %></a></li>
-            <li class="divider-vertical"></li>			
+            <li class="divider-vertical"></li>
             <li><a href="#logout">Log Out</a></li>
 	<%} else {%>
 			<li><a href="#apply">Apply</a></li>
-			<li class="divider-vertical"></li>			
+			<li class="divider-vertical"></li>
 			<li><a href="#login">Log In</a></li>
 	<% } %>
             <!-- <li class="dropdown">

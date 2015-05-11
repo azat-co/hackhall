@@ -248,7 +248,18 @@ app.use(errorHandler);
 // };
 // console.log (ops)
 if (require.main === module) {
-  http.createServer(app).listen(app.get('port'), function(){
+  var server = http.createServer(app)
+  var io = require('socket.io')(server);
+  io.on('connection', function(socket){
+    console.log('a user connected');
+    socket.on('chat message', function(msg){
+      console.log('message: ' + msg);
+    });
+    socket.on('disconnect', function(){
+      console.log('user disconnected');
+    });
+  });
+  server.listen(app.get('port'), function(){
     console.info(c.blue + 'Express server listening on port ' + app.get('port') + c.reset);
   });
   // https.createServer(ops, app).listen(app.get('port'), function(){

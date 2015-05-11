@@ -33,6 +33,7 @@ require([
 	'libs/text!tpl/thankyou.html',
 	'libs/text!tpl/login.html',
 	'libs/text!tpl/profile.html',
+	'libs/text!tpl/chat.html',
 
 	'js/views/headerView',
 	'js/views/alertsView',
@@ -46,7 +47,8 @@ require([
 	'js/views/userView',
 	'js/views/applicationView',
 
-	'js/models/post-model'
+	'js/models/post-model',
+	'/socket.io/socket.io.js'
 ],
 	function (
 		homeTpl,
@@ -54,6 +56,7 @@ require([
 		thankyouTpl,
 		loginTpl,
 		profileTpl,
+		chatTpl,
 
 		HeaderView,
 		AlertsView,
@@ -67,13 +70,15 @@ require([
 		UserView,
 		ApplicationView,
 
-		PostModel
+		PostModel,
+		io
 
 	) {
 	var ApplicationRouter = Backbone.Router.extend({
 		routes: {
 			"": "home",
 			"about": "about",
+			"chat": "chat",
 			"apply": "signup",
 			"login": "login",
 			"profile": "profile",
@@ -95,6 +100,7 @@ require([
 			this.footerView = new FooterView();
 			this.footerView.render();
 			this.aboutView = new AboutView();
+			this.chatView = new ChatView();
 			this.signupView = new SignupView();
 			this.loginView = new LoginView();
 			this.profileView = new ProfileView();
@@ -112,6 +118,9 @@ require([
 		},
 		about: function() {
 			this.aboutView.render();
+		},
+		chat: function(){
+			this.chatView.render();
 		},
 		signup: function() {
 			this.signupView.render();
@@ -180,6 +189,51 @@ require([
 			// console.log(nav)
 			// console.log(nav.find('a[href="#'+Backbone.history.fragment+'"]'))
 			// console.log('a[href="#'+Backbone.history.fragment+'"]');
+		}
+	});
+
+	ChatView = Backbone.View.extend({
+		el: "#content",
+		template: chatTpl,
+		events: {
+			'click .send-message': 'sendMessage'
+		},
+		initialize: function() {
+			var _this = this
+			$.getScript('https://cdn.firebase.com/js/client/2.2.4/firebase.js', function( data, textStatus, jqxhr ) {
+				_this.myFirebaseRef = new Firebase("https://hackhall.firebaseio.com/");
+				_this.myFirebaseRef.on("child_added", function(snapshot) {
+					console.log(snapshot)
+  				$(_this.el).find('.messages').append($('<li>').text(snapshot.val().author + ': ' + snapshot.val().text));  // Alerts "San Francisco"
+				});
+			})
+
+
+			// $.getScript('/socket.io/socket.io.js')
+			// this.socket = io();
+			// this.socket.on('chat message', function(msg){
+		    // $('.messages').append($('<li>').text(msg));
+		  // });
+		},
+		sendMessage: function(element){
+			var $text = $(this.el).find('.new-message')
+			this.myFirebaseRef.push({
+			  author: app.headerView.model.get('firstName') + ' ' + app.headerView.model.get('lastName'),
+			  text: $text.val()
+			});
+			// console.log(element)
+
+	    // this.socket.emit('chat message', $text.val());
+	    // $text.val('');
+	    // return false;
+		},
+		render: function() {
+			if (!app.headerView.model.attributes['_id']) {
+				app.alertsView.error('Please log in first');
+				app.headerView.model.on('change', this.render, this)
+			} else {
+				$(this.el).html(_.template(this.template));
+			}
 		}
 	});
 
@@ -258,7 +312,7 @@ require([
 			this.model.bind('change', this.render, this);
 		},
 		destroy: function() {
-				console.log('s');
+			console.log('s');
 			console.log(this.model.url)
 			this.model.id = this.model.attributes._id;
 			this.model.destroy({
