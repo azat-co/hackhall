@@ -24,6 +24,7 @@
 
 				</div>
 			</div>
+		<% if (attr.isStripeToken) { %>
 			<div class="control-group">
 				<label class="control-label">Email</label>
 				<div class="controls">
@@ -60,8 +61,8 @@
 					<span class="help-block">Link to your GitHub profile.</span>
 				</div>
 			</div>
-
-
+					<%	} else { %>
+					<% } %>
 			<div class="control-group">
 				<div class="controls">
 					<a class="btn" href="#logout">Log out</a>

@@ -27,9 +27,14 @@ exports.add = function(req, res, next) {
 exports.update = function(req, res, next) {
   var data = req.body;
   delete data._id;
+  delete data.approved;
+  delete data.banned;
+  delete data.admin;
+  delete data.role;
   if (req.body.stripeToken) {
     hs.notifyCc(req.session.user);
   }
+
   req.db.User.findByIdAndUpdate(req.session.user._id, {
     $set: data
   }, function(err, obj) {

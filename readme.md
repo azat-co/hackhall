@@ -38,6 +38,8 @@ SESSION_SECRET=ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 
 Then run `foreman start`, or `node server.js`, or `node .`, `npm start`.
 
+My favorite: `$ foreman run node-dev server`.
+
 
 Heroku/cloud config:
 

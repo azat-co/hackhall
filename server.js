@@ -111,6 +111,8 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
   done(null, obj);
 });
+
+
 if (process.env.NODE_ENV ==='production') {
   var gitHubOptions = {
     clientID: process.env.GITHUB_CLIENT_ID,
@@ -123,7 +125,7 @@ if (process.env.NODE_ENV ==='production') {
   var gitHubOptions = {
     clientID: process.env.GITHUB_CLIENT_ID_LOCAL,
     clientSecret: process.env.GITHUB_CLIENT_SECRET_LOCAL,
-    callbackURL: "http://127.0.0.1:3000/auth/github/callback"
+    callbackURL: 'http://localhost:' +  app.get('port') + '/auth/github/callback'
   };
   app.set('stripePub', process.env.STRIPE_PUB_LOCAL);
   app.set('stripeSecret', process.env.STRIPE_SECRET_LOCAL);
