@@ -229,7 +229,14 @@ app.post('/api/application', checkAdmin, db, routes.application.add);
 app.put('/api/application', checkApplicant, db, routes.application.update);
 app.get('/api/application', checkApplicant, db, routes.application.get);
 
-
+app.get('/api/vars', checkUser, function(req, res){
+  var FirebaseTokenGenerator = require("firebase-token-generator");
+  var tokenGenerator = new FirebaseTokenGenerator(process.env.FIREBASE);
+  var token = tokenGenerator.createToken(
+    {uid: req.session.user._id, name: req.session.user.displayName}
+  );
+  res.set('Content-type', 'text/javascript').send('var FIREBASE_TOKEN="' + token +'";')
+})
 
 app.get('*', function(req, res){
   res.status(404).send();

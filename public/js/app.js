@@ -47,8 +47,7 @@ require([
 	'js/views/userView',
 	'js/views/applicationView',
 
-	'js/models/post-model',
-	'/socket.io/socket.io.js'
+	'js/models/post-model'
 ],
 	function (
 		homeTpl,
@@ -70,8 +69,7 @@ require([
 		UserView,
 		ApplicationView,
 
-		PostModel,
-		io
+		PostModel
 
 	) {
 	var ApplicationRouter = Backbone.Router.extend({
@@ -100,7 +98,7 @@ require([
 			this.footerView = new FooterView();
 			this.footerView.render();
 			this.aboutView = new AboutView();
-			this.chatView = new ChatView();
+
 			this.signupView = new SignupView();
 			this.loginView = new LoginView();
 			this.profileView = new ProfileView();
@@ -120,7 +118,12 @@ require([
 			this.aboutView.render();
 		},
 		chat: function(){
-			this.chatView.render();
+
+			$.getScript('/api/vars', function(){
+				this.chatView = new ChatView();
+				this.chatView.render();
+			})
+
 		},
 		signup: function() {
 			this.signupView.render();
@@ -199,13 +202,22 @@ require([
 			'click .send-message': 'sendMessage'
 		},
 		initialize: function() {
+			if (typeof FIREBASE_TOKEN == 'undefined') return false
 			var _this = this
 			$.getScript('https://cdn.firebase.com/js/client/2.2.4/firebase.js', function( data, textStatus, jqxhr ) {
 				_this.myFirebaseRef = new Firebase("https://hackhall.firebaseio.com/");
-				_this.myFirebaseRef.on("child_added", function(snapshot) {
-					console.log(snapshot)
-  				$(_this.el).find('.messages').append($('<li>').text(snapshot.val().author + ': ' + snapshot.val().text));  // Alerts "San Francisco"
+				_this.myFirebaseRef.authWithCustomToken(FIREBASE_TOKEN, function(error, authData) {
+				  if (error) {
+				    console.log("Login Failed!", error);
+				  } else {
+				    console.log("Login Succeeded!", authData);
+						_this.myFirebaseRef.child('messages').on("child_added", function(snapshot) {
+							console.log(snapshot)
+		  				$(_this.el).find('.messages').append($('<li>').text(snapshot.val().author + ': ' + snapshot.val().text));  // Alerts "San Francisco"
+						});
+				  }
 				});
+
 			})
 
 
@@ -217,9 +229,10 @@ require([
 		},
 		sendMessage: function(element){
 			var $text = $(this.el).find('.new-message')
-			this.myFirebaseRef.push({
+			this.myFirebaseRef.child('messages').push({
 			  author: app.headerView.model.get('firstName') + ' ' + app.headerView.model.get('lastName'),
-			  text: $text.val()
+			  text: $text.val(),
+			  uid: app.headerView.model.get('_id')
 			});
 			// console.log(element)
 
@@ -228,12 +241,12 @@ require([
 	    // return false;
 		},
 		render: function() {
-			if (!app.headerView.model.attributes['_id']) {
-				app.alertsView.error('Please log in first');
-				app.headerView.model.on('change', this.render, this)
-			} else {
+			// if (!app.headerView.model.attributes['_id']) {
+				// app.alertsView.error('Please log in first');
+				// app.headerView.model.on('change', this.render, this)
+			// } else {
 				$(this.el).html(_.template(this.template));
-			}
+			// }
 		}
 	});
 
