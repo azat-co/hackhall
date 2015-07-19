@@ -15,6 +15,19 @@ exports.getUsers = function(req, res, next) {
     return next('User is not recognized.')
   }
 }
+csv = require('express-csv')
+
+exports.getUsersCsv = function(req, res, next) {
+  if (req.session.auth && req.session.userId && req.session.admin) {
+    req.db.User.find({}).select({email: 1, firstName:1, lastName:1}).lean().exec(function(err, list) {
+      if (err) return next(err);
+      if (!list) return next(new Error('No records'))
+      res.status(200).csv(list);
+    });
+  } else {
+    return next('User is not recognized.')
+  }
+}
 
 exports.getUser = function(req, res, next) {
   var fields = safeFields;

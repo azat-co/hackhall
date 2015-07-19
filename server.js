@@ -223,8 +223,10 @@ app.get('/api/users/:id', checkUser, db,routes.users.getUser);
 app.post('/api/users', checkAdmin, db, routes.users.add);
 app.put('/api/users/:id', checkAdmin, db, routes.users.update);
 app.delete('/api/users/:id', checkAdmin, db, routes.users.del);
+app.get('/api/users.csv', checkAdmin, db, routes.users.getUsersCsv);
 
 //APPLICATION
+
 app.post('/api/application', checkAdmin, db, routes.application.add);
 app.put('/api/application', checkApplicant, db, routes.application.update);
 app.get('/api/application', checkApplicant, db, routes.application.get);
@@ -277,6 +279,3 @@ else {
   console.info(c.blue + 'Running app as a module' + c.reset)
   exports.app = app;
 }
-
-
-

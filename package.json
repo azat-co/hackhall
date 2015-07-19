@@ -15,6 +15,7 @@
     "csurf": "1.5.0",
     "errorhandler": "1.1.1",
     "express": "4.8.1",
+    "express-csv": "^0.6.0",
     "express-session": "1.7.6",
     "firebase-token-generator": "^2.0.0",
     "method-override": "2.1.3",
