@@ -22,6 +22,9 @@ exports.getUsersCsv = function(req, res, next) {
     req.db.User.find({}).select({email: 1, firstName:1, lastName:1}).lean().exec(function(err, list) {
       if (err) return next(err);
       if (!list) return next(new Error('No records'))
+      list = list.map(function(user, index){
+        return [user['_id'], user['email'], user['firstName'], user['lastName']]
+      })
       res.status(200).csv(list);
     });
   } else {
